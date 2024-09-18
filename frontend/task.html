@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Create Task</title>
+</head>
+<body>
+    <h1>Create Task</h1>
+    <form method="POST" action="/create">
+        <input type="text" name="title" placeholder="Task Title" required>
+        <input type="text" name="description" placeholder="Task Description" required>
+        <input type="date" name="date"> <!-- Date input -->
+        <input type="time" name="time"> <!-- Time input -->
+        <button type="submit">Create Task</button>
+    </form>
+
+    <div id="taskList">
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <div>
+                        <strong>{{ task.title }}</strong><br>
+                        <span>{{ task.description }}</span><br>
+                        <span>Date: {{ task.date }}</span><br>
+                        <span>Time: {{ task.time }}</span><br>
+                        <!-- Edit Button -->
+                        <a href="{{ url_for('edit_task', task_id=task.id) }}">Edit</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
