@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Calendar with Events</title>
+    <style>
+          /* MAIN */
+
+  .toolbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .calendar__week,
+  .calendar__header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  .calendar__week {
+    grid-auto-rows: 100px;
+    text-align: right;
+  }
+
+  .calendar__header {
+    grid-auto-rows: 50px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .calendar__day {
+    padding: 16px;
+  }
+
+
+
+
+  /* COSMETIC STYLING */
+
+  :root {
+    --red: #ED5454;
+  }
+
+  body {
+    font-family: Montserrat;
+    font-weight: 100;
+    color: #A8B2B9;
+  }
+
+  sidebar {
+    background-color: white;
+    box-shadow: 5px 0px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  main {
+    background-color: #FCFBFC;
+  }
+
+  .avatar__name {
+    font-size: 0.8rem;
+  }
+
+  .menu__item {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 16px 16px 16px 14px;
+    border-left: 4px solid transparent;
+    color: inherit;
+    text-decoration: none;
+    transition: color ease 0.3s;
+  }
+
+  .menu__item--active .menu__icon {
+    color: var(--red);
+  }
+  .menu__item--active .menu__text {
+    color: black;
+  }
+
+  .menu__item:hover {
+    color: black;
+  }
+
+
+  .menu__icon {
+    font-size: 1.3rem;
+  }
+
+  @media screen and (min-width: 850px) {
+    .menu__icon {
+      font-size: 0.9rem;
+      padding-right: 16px;
+    }
+    .menu__item--active {
+      border-left: 4px solid var(--red);
+      box-shadow: inset 10px 0px 17px -13px var(--red);
+    }
+  }
+
+  .copyright {
+    font-size: 0.7rem;
+    font-weight: 400;
+  }
+
+  .calendar {
+    background-color: white;
+    border: 1px solid #e1e1e1;
+  }
+
+  .calendar__header > div {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    font-weight: bold;
+  }
+
+  .calendar__day {
+    border-right: 1px solid #e1e1e1;
+    border-top: 1px solid #e1e1e1;
+  }
+
+  .calendar__day:last-child {
+    border-right: 0;
+  }
+
+  .toggle{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    text-align: center;
+    font-size: 0.9em;
+  }
+  .toggle__option{
+    padding: 16px;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    text-transform: capitalize;
+    cursor: pointer;
+  }
+  .toggle__option:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+  }
+  .toggle__option:last-child {
+      border-left: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+  }
+  .toggle__option--selected{
+    border-color: white;
+    background-color: white;
+    color: var(--red);
+    font-weight: 500;
+    box-shadow: 1px 2px 30px -5px var(--red);
+  }
+
+  .calendar__body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 5px;
+}
+
+.calendar__day {
+    padding: 10px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.calendar__day.selected {
+    background-color: #05c3aa;
+    color: #f4f4f4;
+}
+
+.calendar__day.empty {
+    background-color: transparent;
+    border: none;
+}
+
+select {
+    padding: 5px;
+    font-size: 16px;
+}
+
+#event-details {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.event {
+    margin-bottom: 10px;
+}
+
+.event-title {
+    font-weight: bold;
+}
+
+.event-form {
+    display: none;
+    margin-top: 20px;
+}
+
+.event-form input, .event-form textarea {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 5px;
+}
+
+.event-form button {
+    padding: 5px 10px;
+}
+
+.add-event-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: rgb(92, 0, 128);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+        }
+        /* Navbar Styles */
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            position: relative;
+        }
+        .logo a {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        .main-nav {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            margin: 0;
+        }
+        .main-nav li {
+            margin: 0 15px;
+        }
+        .main-nav a {
+            color: white;
+            text-decoration: none;
+        }
+        .main-nav a:hover {
+            text-decoration: underline;
+        }
+        .main-nav a.active {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="logo"><a href="/">Task Manager</a></h1>
+        <ul class="main-nav">
+            <li><a href="/">Overview</a></li>
+            <li><a href="/task">Create New Tasks</a></li>
+            <li><a href="/calendar" class="active">Calendar</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+    </header>
+        <main>
+            <div class="toolbar">
+                <select id="month-select">
+                    <!-- Month options -->
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                    <!-- Add other months -->
+                </select>
+                <select id="year-select"></select>
+                <div class="current-month" id="current-month"></div>
+            </div>
+
+            <div class="calendar">
+                <div class="calendar__header">
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                    <div>Sun</div>
+                </div>
+                <div id="calendar-body" class="calendar__body"></div>
+            </div>
+
+            <!-- Event Details Section -->
+            <div id="event-details">
+                <h3>Events for <span id="selected-date">Select a date</span></h3>
+                <div id="events-list"></div>
+            </div>
+
+            <!-- Add Event Button (only one button, for the selected date) -->
+            <button class="add-event-btn" id="open-event-form" style="display:none;">+ Add Event</button>
+
+            <!-- Event Form Section -->
+            <div class="event-form" id="event-form">
+                <h3>Add Event for <span id="form-date"></span></h3>
+                <input type="text" id="event-title" placeholder="Event Title">
+                <input type="time" id="event-time" placeholder="Event Time">
+                <textarea id="event-description" placeholder="Event Description"></textarea>
+                <button onclick="submitEvent()">Submit Event</button>
+            </div>
+        </main>
+
+    <script>
+        let selectedDay = null;
+        let selectedMonth = null;
+        let selectedYear = null;
+
+        function daysInMonth(month, year) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+
+        function getFirstDayOfWeek(month, year) {
+            return new Date(year, month, 1).getDay();
+        }
+
+        function populateYearSelect() {
+            const yearSelect = document.getElementById('year-select');
+            const currentYear = new Date().getFullYear();
+
+            for (let year = currentYear - 10; year <= currentYear + 10; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                if (year === currentYear) {
+                    option.selected = true;
+                }
+                yearSelect.appendChild(option);
+            }
+        }
+
+        function updateCalendar() {
+            const monthSelect = document.getElementById('month-select');
+            const yearSelect = document.getElementById('year-select');
+            const month = parseInt(monthSelect.value);
+            const year = parseInt(yearSelect.value);
+
+            const days = daysInMonth(month, year);
+            const firstDayOfWeek = getFirstDayOfWeek(month, year);
+            const calendarBody = document.getElementById('calendar-body');
+            const currentMonthText = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
+            document.getElementById('current-month').textContent = currentMonthText;
+
+            calendarBody.innerHTML = '';
+            selectedDay = null;  // Reset selected day when switching months/years
+
+            const adjustedFirstDay = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
+
+            for (let i = 0; i < adjustedFirstDay; i++) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.classList.add('calendar__day', 'empty');
+                calendarBody.appendChild(emptyDiv);
+            }
+
+            for (let day = 1; day <= days; day++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('calendar__day');
+                dayDiv.textContent = day;
+
+                dayDiv.addEventListener('click', () => handleDayClick(day, month, year));
+                calendarBody.appendChild(dayDiv);
+            }
+        }
+
+        function handleDayClick(day, month, year) {
+            const allDays = document.querySelectorAll('.calendar__day');
+            allDays.forEach(dayDiv => dayDiv.classList.remove('selected'));
+
+            selectedDay = day;
+            selectedMonth = month;
+            selectedYear = year;
+
+            const selectedDateText = `${year}-${month + 1}-${day}`;
+            document.getElementById('selected-date').textContent = selectedDateText;
+
+            const dayDiv = Array.from(allDays).find(div => div.textContent === day.toString());
+            dayDiv.classList.add('selected');
+
+            loadEventsForDay(day, month, year);
+            document.getElementById('open-event-form').style.display = 'inline-block';  // Show the add event button
+        }
+
+        function loadEventsForDay(day, month, year) {
+            const selectedDate = `${year}-${month + 1}-${day}`;
+            document.getElementById('selected-date').textContent = selectedDate;
+
+            fetch(`/events?day=${day}&month=${month + 1}&year=${year}`)
+                .then(response => response.json())
+                .then(data => {
+                    const eventsList = document.getElementById('events-list');
+                    eventsList.innerHTML = '';  // Clear previous events
+
+                    if (data.events.length === 0) {
+                        eventsList.innerHTML = '<p>No events for this day.</p>';
+                    } else {
+                        data.events.forEach(event => {
+                            const eventDiv = document.createElement('div');
+                            eventDiv.classList.add('event');
+                            eventDiv.innerHTML = `
+                                <div class="event-title">${event.title}</div>
+                                <div class="event-time">${event.time}</div>
+                                <div class="event-description">${event.description}</div>
+                            `;
+                            eventsList.appendChild(eventDiv);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching events:', error);
+                });
+        }
+
+        document.getElementById('open-event-form').addEventListener('click', () => {
+            if (selectedDay !== null && selectedMonth !== null && selectedYear !== null) {
+                const form = document.getElementById('event-form');
+                const formDate = document.getElementById('form-date');
+                const selectedDate = `${selectedYear}-${selectedMonth + 1}-${selectedDay}`;
+                formDate.textContent = selectedDate;
+                form.style.display = 'block';
+            } else {
+                alert('Please select a date first.');
+            }
+        });
+
+        function submitEvent() {
+            const title = document.getElementById('event-title').value;
+            const time = document.getElementById('event-time').value;
+            const description = document.getElementById('event-description').value;
+
+            fetch('/add-event', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: title,
+                    description: description,
+                    time: time,
+                    day: selectedDay,
+                    month: selectedMonth + 1,
+                    year: selectedYear
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Event added successfully!');
+                    document.getElementById('event-form').reset();
+                    document.getElementById('event-form').style.display = 'none';
+                    loadEventsForDay(selectedDay, selectedMonth, selectedYear);  // Reload events for the day
+                } else {
+                    alert('Failed to add event.');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateYearSelect();
+            updateCalendar();
+
+            document.getElementById('month-select').addEventListener('change', updateCalendar);
+            document.getElementById('year-select').addEventListener('change', updateCalendar);
+        });
+    </script>
+</body>
+</html>

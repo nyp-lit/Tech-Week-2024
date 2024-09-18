@@ -77,7 +77,9 @@ def delete_task(task_id):
     
     return redirect(url_for('index'))  # Redirect back to the task list
 
-
+@app.route('/calendar')
+def calendar():
+    return render_template('calendar.html')
 
 
 if __name__ == '__main__':
