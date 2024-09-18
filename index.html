@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Task Manager</title>
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          color: #333;
+          padding: 20px;
+      }
+      .container {
+          max-width: 600px;
+          margin: 0 auto;
+      }
+      h1, h2 {
+          text-align: center;
+      }
+      .task-form {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+      }
+      #taskList ul {
+          list-style: none;
+          padding: 0;
+      }
+      #taskList li {
+          display: flex;
+          justify-content: space-between;
+          background-color: #fff;
+          margin-bottom: 10px;
+          padding: 10px;
+          border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Task Manager</h1>
+      <!-- Task Form -->
+      <div class="task-form">
+          <input type="text" id="taskName" placeholder="Task name" required>
+          <input type="date" id="taskDate" required>
+          <button id="addTaskBtn">Add Task</button>
+      </div>
+      <!-- Task List -->
+      <div id="taskList">
+          <h2>Your Tasks</h2>
+          <ul id="tasks"></ul>
+      </div>
+      <!-- Calendar -->
+      <div id="calendar">
+          <h2>Calendar</h2>
+          <!-- Calendar will be inserted here by JavaScript -->
+      </div>
+    </div>
+    <script>
+      document.getElementById('addTaskBtn').addEventListener('click', addTask);
+      window.onload = fetchTasks;
+
+      function fetchTasks() {
+          fetch('/tasks')
+              .then(response => response.json())
+              .then(tasks => {
+                  tasks.forEach(task => {
+                      displayTask(task);
+                  });
+              });
+      }
+
+      function addTask() {
+          const taskName = document.getElementById('taskName').value;
+          const taskDate = document.getElementById('taskDate').value;
+
+          if (taskName && taskDate) {
+              const task = { name: taskName, date: taskDate };
+
+              fetch('/add_task', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(task)
+              })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      displayTask(task);
+                  }
+              });
+          }
+      }
+
+      function displayTask(task) {
+          const taskList = document.getElementById('tasks');
+          const li = document.createElement('li');
+          li.innerHTML = `
+              ${task.name} - ${task.date}
+              <button onclick="editTask('${task.id}', '${task.name}', '${task.date}')">Edit</button>
+              <button onclick="deleteTask('${task.id}')">Delete</button>
+          `;
+          taskList.appendChild(li);
+      }
+
+      function deleteTask(taskId) {
+          fetch(`/delete_task/${taskId}`, {
+              method: 'DELETE'
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  location.reload(); // Reload page to update task list
+              }
+          });
+      }
+
+      function editTask(taskId, oldName, oldDate) {
+          const newName = prompt("Edit task name:", oldName);
+          const newDate = prompt("Edit task date:", oldDate);
+
+          if (newName && newDate) {
+              const updatedTask = { name: newName, date: newDate };
+
+              fetch(`/edit_task/${taskId}`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(updatedTask)
+              })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      location.reload(); // Reload page to show updated task
+                  }
+              });
+          }
+      }
+    </script>
+  </body>
+</html>
