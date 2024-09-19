@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash,jsonify
+from flask import Flask, render_template, redirect, url_for, request,flash,jsonify
 import os
 
 # from forms import TaskForm
@@ -81,13 +81,13 @@ def delete_task(task_id):
 
 @app.route('/calendar')
 def calendar():
-    return render_template('calendar.html')
+    return render_template('calendar.html',events=events)
 
 # Route to Add Event (Create) in calendar
 @app.route('/create_event', methods=['GET', 'POST'])
 def create_event():
     if request.method == 'POST':
-        event_name = request.form['event_name']
+        eventname = request.form['eventname']
         description = request.form['description']
         date = request.form['date']  # Get the event date input
         time = request.form['time']  # Get the event time input
@@ -95,17 +95,17 @@ def create_event():
         # Create the event object and add it to the events list
         new_event = {
             'id': len(events) + 1,
-            'event_name': event_name,
+            'eventname': eventname,
             'description': description,
             'date': date,  # Store the date
             'time': time,  # Store the time
         }
         events.append(new_event)  # Append the new event to the list
 
-        flash('Event created successfully!', 'success')
         return redirect(url_for('calendar'))  # Redirect to calendar after creating the event
     
-    return render_template('create_event.html')
+    return render_template('calendar.html',events=events)
+
 
 
 
