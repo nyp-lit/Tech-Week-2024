@@ -1,0 +1,31 @@
+general notes
+
+mongosh commands (terminal) :
+
+show dbs = show all database
+switch [name] = switch to different database (file) eg. switch admin
+db.createCollection("[name]") = create new collection
+db.dropDatabase() = delete database you are in
+
+database requirements: 
+- create task:
+  - task name
+  - description:
+  - status:
+  - due date: 
+- edit task: (edit database)
+- delete task: (try to implement restore option)
+
+calendar:
+- database of different backgrounds
+- create schedule:
+  - task
+  - colour
+  - schedule name
+  - time range
+  - description
+
+notification:
+- overdue tasks
+- added task
+- deleted task
