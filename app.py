@@ -1,14 +1,16 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash,jsonify
 import os
 
 # from forms import TaskForm
 
-app = Flask(__name__, template_folder='../frontend')
+app = Flask(__name__, template_folder='templates')
 # app.config['SECRET_KEY'] = 'your_secret_key'
 
 # In-memory task list to simulate a database - to be changed to database 
 tasks = []
 
+#memory for events,yet to be changed to database
+events = []
 # Route to List All Tasks (Read)
 @app.route('/')
 def index():
@@ -80,6 +82,79 @@ def delete_task(task_id):
 @app.route('/calendar')
 def calendar():
     return render_template('calendar.html')
+
+# Route to Add Event (Create) in calendar
+@app.route('/create_event', methods=['GET', 'POST'])
+def create_event():
+    if request.method == 'POST':
+        event_name = request.form['event_name']
+        description = request.form['description']
+        date = request.form['date']  # Get the event date input
+        time = request.form['time']  # Get the event time input
+
+        # Create the event object and add it to the events list
+        new_event = {
+            'id': len(events) + 1,
+            'event_name': event_name,
+            'description': description,
+            'date': date,  # Store the date
+            'time': time,  # Store the time
+        }
+        events.append(new_event)  # Append the new event to the list
+
+        flash('Event created successfully!', 'success')
+        return redirect(url_for('calendar'))  # Redirect to calendar after creating the event
+    
+    return render_template('create_event.html')
+
+
+
+# Route to Delete Event (Optional)in calendar
+@app.route('/delete_event/<int:event_id>', methods=['POST'])
+def delete_event(event_id):
+    global events
+    # Find the event by its ID
+    event_to_delete = next((event for event in events if event['id'] == event_id), None)
+    
+    if event_to_delete:
+        events.remove(event_to_delete)  # Remove the event from the list
+        flash('Event deleted successfully!', 'success')
+    else:
+        flash('Event not found!', 'error')
+    
+    return redirect(url_for('calendar'))  # Redirect back to the calendar
+
+#Route to edit the event 
+@app.route('/edit_event/<int:event_id>', methods=['GET'])
+def edit_event(event_id):
+    # Attempt to find the event by its ID
+    event_to_edit = next((event for event in events if event['id'] == event_id), None)
+
+    # Check if the event exists
+    if event_to_edit is not None:
+        return jsonify(event_to_edit), 200  # Return the event details as JSON with 200 status
+    else:
+        # Return a structured error message if the event is not found
+        return jsonify({'error': 'Event not found!'}), 404
+    
+    
+#update request 
+@app.route('/update_event/<int:event_id>', methods=['POST'])
+def update_event(event_id):
+    data = request.get_json()
+    event_to_update = next((event for event in events if event['id'] == event_id), None)
+    
+    if event_to_update:
+        # Update the event details
+        event_to_update['title'] = data.get('title', event_to_update['title'])
+        event_to_update['time'] = data.get('time', event_to_update['time'])
+        event_to_update['description'] = data.get('description', event_to_update['description'])
+        event_to_update['date'] = data.get('date', event_to_update['date'])
+        
+        return jsonify({'message': 'Event updated successfully!', 'event': event_to_update}), 200
+    else:
+        return jsonify({'error': 'Event not found!'}), 404
+
 
 
 if __name__ == '__main__':
