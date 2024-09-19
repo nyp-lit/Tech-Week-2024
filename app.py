@@ -87,18 +87,18 @@ def calendar():
 @app.route('/create_event', methods=['GET', 'POST'])
 def create_event():
     if request.method == 'POST':
-        eventname = request.form['eventname']
+        event_name = request.form['eventname']
+        start_time = request.form['start_time']
+        end_time = request.form['end_time']
         description = request.form['description']
-        date = request.form['date']  # Get the event date input
-        time = request.form['time']  # Get the event time input
-
+        event_date = request.form['event_date']
         # Create the event object and add it to the events list
         new_event = {
             'id': len(events) + 1,
-            'eventname': eventname,
+            'eventname': event_name,
             'description': description,
-            'date': date,  # Store the date
-            'time': time,  # Store the time
+            'date': event_date,  # Store the date
+            'time': start_time + '-' + end_time,  # Store the time
         }
         events.append(new_event)  # Append the new event to the list
 
