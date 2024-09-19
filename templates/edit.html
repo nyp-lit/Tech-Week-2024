@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+        /* Navbar Styles */
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            position: relative;
+        }
+        .logo a {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        .main-nav {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            margin: 0;
+        }
+        .main-nav li {
+            margin: 0 15px;
+        }
+        .main-nav a {
+            color: white;
+            text-decoration: none;
+        }
+        .main-nav a:hover {
+            text-decoration: underline;
+        }
+        .main-nav a.active {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="logo"><a href="/">Task Manager</a></h1>
+        <ul class="main-nav">
+            <li><a href="/">Overview</a></li>
+            <li><a href="/task" class="active">Create New Tasks</a></li>
+            <li><a href="/calendar">Calendar</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+    </header>
+    <h1>Edit Task</h1>
+    <form method="POST" action="{{ url_for('edit_task', task_id=task.id) }}">
+        <input type="text" name="title" placeholder="Task Title" value="{{ task.title }}" required>
+        <input type="text" name="description" placeholder="Task Description" value="{{ task.description }}" required>
+        <input type="date" name="date" value="{{ task.date }}"> <!-- Date input -->
+        <input type="time" name="time" value="{{ task.time }}"> <!-- Time input -->
+        <button type="submit">Update Task</button>
+    </form>
+
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <p><a href="{{ url_for('index') }}">Back to Task List</a></p>
+</body>
+</html>
