@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "66ebb2a3443df9d798c73bfa"
+  },
+  "task": "Task 1",
+  "colour": "Red",
+  "scheduleName": "school",
+  "description": "This is Schedule 1 of Task 1",
+  "dateEnd": {
+    "$date": "2024-09-24T23:59:00.000Z"
+  },
+  "dateStart": {
+    "$date": "2024-09-19T00:00:00.000Z"
+  },
+  "deletedSchedule": false,
+  "completed": false,
+  "overdue": false
+}]
