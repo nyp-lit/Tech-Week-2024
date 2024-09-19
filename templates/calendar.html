@@ -327,7 +327,6 @@ select {
         <input type="text" name="eventname" id="eventname" placeholder="Event Name" required>
         <input type="time" name="time" id="time" placeholder="Event Time" required>
         <textarea name="description" id="description" placeholder="Event Description" required></textarea>
-        <input type="date" name="date" required>
         <button type="submit">Submit Event</button>
 </form>
     </div>
@@ -476,7 +475,7 @@ select {
             const time = document.getElementById('event-time').value;
             const description = document.getElementById('event-description').value;
 
-            fetch('/add-event', {
+            fetch('/create_event', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
