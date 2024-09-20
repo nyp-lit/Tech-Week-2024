@@ -265,6 +265,56 @@ select {
         .main-nav a.active {
             text-decoration: underline;
         }
+        .event-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: auto;
+}
+
+.time-inputs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.time-inputs label {
+    margin-right: 5px;
+}
+
+.time-inputs input[type="time"] {
+    padding: 5px;
+    width: 120px;
+    font-size: 14px;
+}
+
+.time-inputs span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+textarea {
+    margin-bottom: 15px;
+    padding: 8px;
+    width: 100%;
+    height: 80px;
+    font-size: 14px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
     </style>
 </head>
 <body>
@@ -321,15 +371,29 @@ select {
             <!-- Add Event Button (only one button, for the selected date) -->
             <button class="add-event-btn" id="open-event-form" style="display:none;">+ Add Event</button>
 <!-- Event Form Section -->
-<form method="POST" action="/create_event">
-    <div class="event-form" id="event-form">
-        <h3>Add Event for <span id="form-date"></span></h3>
-        <input type="text" name="eventname" id="eventname" placeholder="Event Name" required>
-        <input type="time" name="time" id="time" placeholder="Event Time" required>
-        <textarea name="description" id="description" placeholder="Event Description" required></textarea>
-        <button type="submit">Submit Event</button>
+<form method="POST" action="/create_event" id="event-form" style="display:none;">
+    <h3>Add Event for <span id="form-date"></span></h3>
+
+    <input type="text" name="eventname" id="eventname" placeholder="Event Name" required>
+
+    <!-- Start Time and End Time -->
+    <label for="start_time">Start Time:</label>
+    <input type="time" name="start_time" id="start_time" required>
+
+    <label for="end_time">End Time:</label>
+    <input type="time" name="end_time" id="end_time" required>
+
+    <textarea name="description" id="description" placeholder="Event Description" required></textarea>
+
+    <!-- Hidden field for the selected date -->
+    <input type="hidden" name="event_date" id="event-date">
+
+    <button type="submit">Submit Event</button>
 </form>
-    </div>
+
+
+
+
 
 <div class="calendar">
         <!-- Loop through the events -->
@@ -424,9 +488,15 @@ select {
             const dayDiv = Array.from(allDays).find(div => div.textContent === day.toString());
             dayDiv.classList.add('selected');
 
+            // Set the hidden input field value to the full date
+            const selectedDate = `${year}-${month + 1}-${day}`;
+            document.getElementById('event-date').value = selectedDate;
+
             loadEventsForDay(day, month, year);
             document.getElementById('open-event-form').style.display = 'inline-block';  // Show the add event button
         }
+
+
 
         function loadEventsForDay(day, month, year) {
             const selectedDate = `${year}-${month + 1}-${day}`;
@@ -464,43 +534,11 @@ select {
                 const formDate = document.getElementById('form-date');
                 const selectedDate = `${selectedYear}-${selectedMonth + 1}-${selectedDay}`;
                 formDate.textContent = selectedDate;
-                form.style.display = 'block';
+                form.style.display = 'block';  // Show the form when a date is selected
             } else {
                 alert('Please select a date first.');
             }
         });
-
-        function submitEvent() {
-            const title = document.getElementById('event-title').value;
-            const time = document.getElementById('event-time').value;
-            const description = document.getElementById('event-description').value;
-
-            fetch('/create_event', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    title: title,
-                    description: description,
-                    time: time,
-                    day: selectedDay,
-                    month: selectedMonth + 1,
-                    year: selectedYear
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Event added successfully!');
-                    document.getElementById('event-form').reset();
-                    document.getElementById('event-form').style.display = 'none';
-                    loadEventsForDay(selectedDay, selectedMonth, selectedYear);  // Reload events for the day
-                } else {
-                    alert('Failed to add event.');
-                }
-            });
-        }
 
         document.addEventListener('DOMContentLoaded', () => {
             populateYearSelect();
