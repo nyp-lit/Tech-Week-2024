@@ -101,7 +101,7 @@
         list-style-type: none;
         padding: 0;
         margin: 20px auto;
-        max-width: 600px;  /* Limit the width of the task list */
+        max-width: 1000px;  /* Limit the width of the task list */
         width: 100%;  /* Make it responsive */
     }
 
@@ -177,7 +177,6 @@
             {% endif %}
         {% endwith %}
 
-        <h2>Your Tasks</h2>
         <div id="taskList">
             <ul>
                 {% for task in tasks %}

@@ -6,7 +6,7 @@
     <title>Edit Task</title>
         <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
             background-color: #f4f4f4;
             color: #333;
         }
@@ -16,10 +16,11 @@
         }
         /* Navbar Styles */
         .header {
-            background-color: #333;
+            background-color:  #730f73;
             color: #fff;
-            padding: 10px 20px;
+            padding: 20px 20px;
             position: relative;
+            border-radius : 5px;
         }
         .logo a {
             color: white;
@@ -28,7 +29,7 @@
         }
         .main-nav {
             list-style: none;
-            padding: 0;
+            padding: 20;
             display: flex;
             justify-content: space-around;
             margin: 0;
@@ -41,11 +42,148 @@
             text-decoration: none;
         }
         .main-nav a:hover {
-            text-decoration: underline;
+            background-color:  rgb(176, 35, 164);;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 5px;
+            color: white;
         }
         .main-nav a.active {
-            text-decoration: underline;
+            font-weight: bold;
         }
+
+    form {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        max-width: 600px;
+        margin: 20px auto;
+    }
+
+    form input, form button {
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #333;
+        width: calc(50% - 16px); /* Make inputs equal width, minus the gap */
+        box-sizing: border-box; /* Ensure padding is included in width */
+    }
+
+    form input[type="date"], form input[type="time"] {
+        width: calc(50% - 16px); /* Force date and time inputs to same width as text inputs */
+    }
+<!--The update button-->
+    form input:hover {
+        background-color: #ddd;
+    }
+
+    form button {
+        background-color: rgb(142, 62, 185);
+        padding: 10px;
+        color: white;
+        border: none;
+        width: 100%;
+        max-width: 25%; /* Keep button smaller */
+        text-align: center;
+        cursor: pointer;
+    }
+
+    form button:hover {
+        background-color: rgb(110, 50, 143);
+    }
+
+    form button i {
+        margin-right: 8px;
+    }
+
+    /* Task list styles */
+    #taskList {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #taskList ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 20px auto;
+        max-width: 600px;
+        width: 100%;
+    }
+
+    #taskList li {
+        background-color: #fff;
+        margin: 10px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    #taskList li div {
+        flex-grow: 1;
+    }
+
+    #taskList li strong {
+        font-size: 18px;
+        color: #730f73;
+    }
+
+    #taskList li span {
+        display: block;
+        margin-top: 5px;
+        color: #666;
+    }
+
+    #taskList li a {
+        color: #730f73;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 8px 12px;
+        background-color: #eee;
+        border-radius: 4px;
+    }
+
+    #taskList li a:hover {
+        background-color: #730f73;
+        color: white;
+    }
+
+    /* Back to Task List Button Styling */
+
+    #back-button:hover {
+        background-color: rgb(110, 50, 143);
+        color: #ddd;
+    }
+
+    #back-button {
+    padding: 5px 15px;
+    color: white;
+    background-color: rgb(142, 62, 185);
+    border-radius: 15px;
+    font-weight: bold;
+    text-align: center;
+    margin-right: auto;
+    margin-;eft": 0;
+    width: 5%;
+    font-size: smaller;
+    display: inline-block;
+    }
+
+<!--Ensure the link in #back-button has its own styling -->
+    #back-button a {
+        color: white; /* Force text color to white */
+        text-decoration: none;
+    }
+
+    #back-button a:hover {
+        color: #ddd; /* Keep it white even on hover */
+    }
+
     </style>
 </head>
 <body>
@@ -59,6 +197,7 @@
         </ul>
     </header>
     <h1>Edit Task</h1>
+
     <form method="POST" action="{{ url_for('edit_task', task_id=task.id) }}">
         <input type="text" name="title" placeholder="Task Title" value="{{ task.title }}" required>
         <input type="text" name="description" placeholder="Task Description" value="{{ task.description }}" required>
@@ -66,6 +205,7 @@
         <input type="time" name="time" value="{{ task.time }}"> <!-- Time input -->
         <button type="submit">Update Task</button>
     </form>
+
 
     <!-- Display flash messages -->
     {% with messages = get_flashed_messages(with_categories=True) %}
@@ -77,7 +217,8 @@
             </ul>
         {% endif %}
     {% endwith %}
-
-    <p><a href="{{ url_for('index') }}">Back to Task List</a></p>
+    <div id="back-button">
+        <p><a href="{{ url_for('index') }}">Back to Task List</a></p>
+    </div>
 </body>
 </html>

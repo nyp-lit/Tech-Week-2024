@@ -248,25 +248,25 @@
             <!-- Add Event Button (only one button, for the selected date) -->
             <button class="add-event-btn" id="open-event-form" style="display:none;">+ Add Event</button>
 <!-- Event Form Section -->
-<form method="POST" action="/create_event" id="event-form" style="display:none;">
-    <h3>Add Event for <span id="form-date"></span></h3>
+<!--<form method="POST" action="/create_event" id="event-form" style="display:none;">-->
+<!--    <h3>Add Event for <span id="form-date"></span></h3>-->
 
-    <input type="text" name="eventname" id="eventname" placeholder="Event Name" required>
+<!--    <input type="text" name="eventname" id="eventname" placeholder="Event Name" required>-->
 
-    <!-- Start Time and End Time -->
-    <label for="start_time">Start Time:</label>
-    <input type="time" name="start_time" id="start_time" required>
+<!--    &lt;!&ndash; Start Time and End Time &ndash;&gt;-->
+<!--    <label for="start_time">Start Time:</label>-->
+<!--    <input type="time" name="start_time" id="start_time" required>-->
 
-    <label for="end_time">End Time:</label>
-    <input type="time" name="end_time" id="end_time" required>
+<!--    <label for="end_time">End Time:</label>-->
+<!--    <input type="time" name="end_time" id="end_time" required>-->
 
-    <textarea name="description" id="description" placeholder="Event Description" required></textarea>
+<!--    <textarea name="description" id="description" placeholder="Event Description" required></textarea>-->
 
-    <!-- Hidden field for the selected date -->
-    <input type="hidden" name="event_date" id="event-date">
+<!--    &lt;!&ndash; Hidden field for the selected date &ndash;&gt;-->
+<!--    <input type="hidden" name="event_date" id="event-date">-->
 
-    <button type="submit">Submit Event</button>
-</form>
+<!--    <button type="submit">Submit Event</button>-->
+<!--</form>-->
 
 
 
@@ -284,7 +284,7 @@
                 </div>
             </div>
         {% else %}
-            <p>No events scheduled.</p>
+<!--            <p>No events scheduled.</p>-->
         {% endfor %}
     </div>
             </div>
