@@ -120,55 +120,6 @@
             font-family: Verdana, Geneva, Tahoma, sans-serif;
         }
 
-        .add-event-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #730f73;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .add-event-btn:hover {
-            background-color: #590c59;
-        }
-
-        .event-form {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .event-form input,
-        .event-form textarea {
-            display: block;
-            margin-bottom: 10px;
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .event-form button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .event-form button:hover {
-            background-color: #0056b3;
-        }
-
         select {
             padding: 10px;
             font-size: 16px;
@@ -245,52 +196,16 @@
                 <div id="events-list"></div>
             </div>
 
-            <!-- Add Event Button (only one button, for the selected date) -->
-            <button class="add-event-btn" id="open-event-form" style="display:none;">+ Add Event</button>
-<!-- Event Form Section -->
-<!--<form method="POST" action="/create_event" id="event-form" style="display:none;">-->
-<!--    <h3>Add Event for <span id="form-date"></span></h3>-->
-
-<!--    <input type="text" name="eventname" id="eventname" placeholder="Event Name" required>-->
-
-<!--    &lt;!&ndash; Start Time and End Time &ndash;&gt;-->
-<!--    <label for="start_time">Start Time:</label>-->
-<!--    <input type="time" name="start_time" id="start_time" required>-->
-
-<!--    <label for="end_time">End Time:</label>-->
-<!--    <input type="time" name="end_time" id="end_time" required>-->
-
-<!--    <textarea name="description" id="description" placeholder="Event Description" required></textarea>-->
-
-<!--    &lt;!&ndash; Hidden field for the selected date &ndash;&gt;-->
-<!--    <input type="hidden" name="event_date" id="event-date">-->
-
-<!--    <button type="submit">Submit Event</button>-->
-<!--</form>-->
-
-
-
-
-
 <div class="calendar">
-        <!-- Loop through the events -->
-        {% for event in events %}
-            <div class="day">
-                <h3>{{ event.date }}</h3> <!-- Display date -->
-                <div class="event">
-                    <strong>{{ event.eventname }}</strong><br>
-                    <small>{{ event.time }}</small><br>
-                    <p>{{ event.description }}</p>
-                </div>
-            </div>
-        {% else %}
-<!--            <p>No events scheduled.</p>-->
-        {% endfor %}
-    </div>
-            </div>
+
+</div>
         </main>
 
     <script>
+        let lastSelectedDay = null;
+        let lastSelectedMonth = null;
+        let lastSelectedYear = null;
+
         let selectedDay = null;
         let selectedMonth = null;
         let selectedYear = null;
@@ -351,79 +266,120 @@
             }
         }
 
-        function handleDayClick(day, month, year) {
-            const allDays = document.querySelectorAll('.calendar__day');
-            allDays.forEach(dayDiv => dayDiv.classList.remove('selected'));
 
-            selectedDay = day;
-            selectedMonth = month;
-            selectedYear = year;
+let eventCache = {};  // Cache for storing events by date
 
-            const selectedDateText = `${year}-${month + 1}-${day}`;
-            document.getElementById('selected-date').textContent = selectedDateText;
+function handleDayClick(day, month, year) {
+    const allDays = document.querySelectorAll('.calendar__day');
+    allDays.forEach(dayDiv => dayDiv.classList.remove('selected'));
 
-            const dayDiv = Array.from(allDays).find(div => div.textContent === day.toString());
-            dayDiv.classList.add('selected');
+    selectedDay = day;
+    selectedMonth = month;
+    selectedYear = year;
 
-            // Set the hidden input field value to the full date
-            const selectedDate = `${year}-${month + 1}-${day}`;
-            document.getElementById('event-date').value = selectedDate;
+    // Ensure both day and month are padded with leading zeros
+    const formattedDay = day.toString().padStart(2, '0'); // Pad day to 2 digits
+    const formattedMonth = (month + 1).toString().padStart(2, '0'); // Pad month to 2 digits (month is zero-indexed)
 
-            loadEventsForDay(day, month, year);
-            document.getElementById('open-event-form').style.display = 'inline-block';  // Show the add event button
-        }
+    // Format the selected date as YYYY-MM-DD
+    const selectedDateText = `${year}-${formattedMonth}-${formattedDay}`;
 
+    // Display the formatted date with leading zeros
+    document.getElementById('selected-date').textContent = `Event(s) for ${selectedDateText}`;
 
+    const dayDiv = Array.from(allDays).find(div => div.textContent === day.toString());
+    if (dayDiv) {
+        dayDiv.classList.add('selected');
+    }
 
-        function loadEventsForDay(day, month, year) {
-            const selectedDate = `${year}-${month + 1}-${day}`;
-            document.getElementById('selected-date').textContent = selectedDate;
+    // Load events for the selected day
+    loadEventsForDay(day, month, year);
+}
 
-            fetch(`/events?day=${day}&month=${month + 1}&year=${year}`)
-                .then(response => response.json())
-                .then(data => {
-                    const eventsList = document.getElementById('events-list');
-                    eventsList.innerHTML = '';  // Clear previous events
+function loadEventsForDay(day, month, year) {
+    const selectedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-                    if (data.events.length === 0) {
-                        eventsList.innerHTML = '<p>No events for this day.</p>';
-                    } else {
-                        data.events.forEach(event => {
-                            const eventDiv = document.createElement('div');
-                            eventDiv.classList.add('event');
-                            eventDiv.innerHTML = `
-                                <div class="event-title">${event.title}</div>
-                                <div class="event-time">${event.time}</div>
-                                <div class="event-description">${event.description}</div>
-                            `;
-                            eventsList.appendChild(eventDiv);
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching events:', error);
-                });
-        }
+    // Clear the displayed date text
+    document.getElementById('selected-date').textContent = `${selectedDate}`;
 
-        document.getElementById('open-event-form').addEventListener('click', () => {
-            if (selectedDay !== null && selectedMonth !== null && selectedYear !== null) {
-                const form = document.getElementById('event-form');
-                const formDate = document.getElementById('form-date');
-                const selectedDate = `${selectedYear}-${selectedMonth + 1}-${selectedDay}`;
-                formDate.textContent = selectedDate;
-                form.style.display = 'block';  // Show the form when a date is selected
-            } else {
-                alert('Please select a date first.');
+    // Clear previous events to avoid duplication and incorrect display
+    const eventsList = document.getElementById('events-list');
+    eventsList.innerHTML = '';  // Always clear previous events
+
+    // Check if events for this date are already cached
+    if (eventCache[selectedDate]) {
+        displayEvents(eventCache[selectedDate], selectedDate);
+    } else {
+        // Fetch events for the selected date from the server if not cached
+        fetch(`/events?day=${day}&month=${month + 1}&year=${year}`)
+            .then(response => response.json())
+            .then(data => {
+                // Remove duplicates from the event list if needed
+                const uniqueEvents = filterUniqueEvents(data.events);
+
+                // Cache the events for this date
+                eventCache[selectedDate] = uniqueEvents;
+
+                // Display the events for the selected date only
+                displayEvents(eventCache[selectedDate], selectedDate);
+            })
+            .catch(error => {
+                console.error('Error fetching events:', error);
+            });
+    }
+}
+
+function displayEvents(events, selectedDate) {
+    const eventsList = document.getElementById('events-list');
+
+    // Clear previous events again before rendering new ones (extra safety)
+    eventsList.innerHTML = '';
+
+    if (events.length === 0) {
+        eventsList.innerHTML = '<p>No events for this day.</p>';
+    } else {
+        events.forEach(event => {
+            // Check if the event's date matches the selected date (YYYY-MM-DD format)
+            if (event.date === selectedDate) {
+                const eventDiv = document.createElement('div');
+                eventDiv.classList.add('event');
+                eventDiv.innerHTML = `
+                    <div class="event-title">${event.title}</div>
+                    <div class="event-time">${event.time}</div>
+                    <div class="event-description">${event.description}</div>
+                `;
+                eventsList.appendChild(eventDiv);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            populateYearSelect();
-            updateCalendar();
+        // If no matching events are found after filtering by date, show a message
+        if (!eventsList.hasChildNodes()) {
+            eventsList.innerHTML = '<p>No events for this day.</p>';
+        }
+    }
+}
 
-            document.getElementById('month-select').addEventListener('change', updateCalendar);
-            document.getElementById('year-select').addEventListener('change', updateCalendar);
-        });
+// Helper function to filter out duplicate events by event title and description
+function filterUniqueEvents(events) {
+    const seenEvents = new Set();
+    return events.filter(event => {
+        const identifier = `${event.title}-${event.description}`;
+        if (!seenEvents.has(identifier)) {
+            seenEvents.add(identifier);
+            return true;
+        }
+        return false;
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    populateYearSelect();
+    updateCalendar();
+
+    document.getElementById('month-select').addEventListener('change', updateCalendar);
+    document.getElementById('year-select').addEventListener('change', updateCalendar);
+});
+
     </script>
 </body>
 </html>
