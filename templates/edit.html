@@ -78,6 +78,7 @@
     }
 
     form button {
+        font-family: inherit;
         background-color: rgb(142, 62, 185);
         padding: 10px;
         color: white;
@@ -155,12 +156,8 @@
 
     /* Back to Task List Button Styling */
 
-    #back-button:hover {
-        background-color: rgb(110, 50, 143);
-        color: #ddd;
-    }
-
-    #back-button {
+    #back-button a{
+    text-decoration: none;
     padding: 5px 15px;
     color: white;
     background-color: rgb(142, 62, 185);
@@ -168,20 +165,14 @@
     font-weight: bold;
     text-align: center;
     margin-right: auto;
-    margin-;eft": 0;
     width: 5%;
     font-size: smaller;
     display: inline-block;
     }
 
-<!--Ensure the link in #back-button has its own styling -->
-    #back-button a {
-        color: white; /* Force text color to white */
-        text-decoration: none;
-    }
-
-    #back-button a:hover {
-        color: #ddd; /* Keep it white even on hover */
+    #back-button a:hover{
+        background-color: #730f73;
+        color: white;
     }
 
     </style>
@@ -218,7 +209,7 @@
         {% endif %}
     {% endwith %}
     <div id="back-button">
-        <p><a href="{{ url_for('index') }}">Back to Task List</a></p>
+        <a href="{{ url_for('index') }}">Back to Task List</a>
     </div>
 </body>
 </html>
