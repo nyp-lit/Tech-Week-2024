@@ -9,17 +9,15 @@
             background-color: #f4f4f4;
             color: #333;
         }
-
         h1, h2 {
             text-align: center;
         }
-        /* Navbar Styles */
         .header {
-            background-color:  #730f73;
+            background-color: #730f73;
             color: #fff;
             padding: 20px 20px;
             position: relative;
-            border-radius : 5px;
+            border-radius: 5px;
         }
         .logo a {
             color: white;
@@ -41,7 +39,7 @@
             text-decoration: none;
         }
         .main-nav a:hover {
-            background-color:  rgb(176, 35, 164);;
+            background-color: rgb(176, 35, 164);
             padding: 10px;
             font-weight: bold;
             border-radius: 5px;
@@ -50,7 +48,6 @@
         .main-nav a.active {
             font-weight: bold;
         }
-
         form {
             display: flex;
             justify-content: center;
@@ -62,83 +59,32 @@
             border: 1px solid #333;
             width: 25%;
         }
-        form input:hover {
-            background-color: #ddd;
-        }
-<!--        Create task button-->
         form button {
             background-color: rgb(160, 65, 212);
-            padding: 10px;
             color: white;
             border: none;
-            width: 10%;
-            text-align: center;
             cursor: pointer;
         }
-        form button:hover{
-            background-color: #ddd;
+        #taskList {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        form button i {
-            margin-right: 8px;
+        #taskList ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 1000px;
+            width: 100%;
         }
-<!--        The <i> element inside the <button> tag is usually used for an icon     -->
-
-    #taskList {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #taskList ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 20px auto;
-        max-width: 1000px;  /* Limit the width of the task list */
-        width: 100%;  /* Make it responsive */
-    }
-
-    #taskList li {
-        background-color: #fff;
-        margin: 10px 0;  /* Adds vertical space between tasks */
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;  /* Make tasks take full width of container */
-    }
-
-    #taskList li div {
-        flex-grow: 1;
-    }
-
-    #taskList li strong {
-        font-size: 18px;
-        color: #730f73;
-    }
-
-    #taskList li span {
-        display: block;
-        margin-top: 5px;
-        color: #666;
-    }
-
-    #taskList li a {
-        color: #730f73;
-        text-decoration: none;
-        font-weight: bold;
-        padding: 8px 12px;
-        background-color: #eee;
-        border-radius: 4px;
-    }
-
-    #taskList li a:hover {
-        background-color: #730f73;
-        color: white;
-    }
-
+        #taskList li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -153,13 +99,12 @@
     </header>
 
     <h1>Create Task</h1>
-    <form method="POST" action="/create">
-        <input type="text" name="title" placeholder="Task Title" required>
-        <input type="text" name="description" placeholder="Task Description" required>
-        <input type="date" name="date"> <!-- Date input -->
+    <form id="taskForm" method="POST">
+        <input type="text" name="title" id="title" placeholder="Task Title" required>
+        <input type="text" name="description" id="description" placeholder="Task Description" required>
+        <input type="date" name="date" id="date" required>
         <label for="start_time">Start Time:</label>
         <input type="time" name="start_time" id="start_time" required>
-
         <label for="end_time">End Time:</label>
         <input type="time" name="end_time" id="end_time" required>
         <button type="submit">Create Task</button>
@@ -174,7 +119,6 @@
                         <span>{{ task.description }}</span><br>
                         <span>Date: {{ task.date }}</span><br>
                         <span>Time: {{ task.time }}</span><br>
-                        <!-- Edit Button -->
                         <a href="{{ url_for('edit_task', task_id=task.id) }}">Edit</a>
                     </div>
                 </li>
@@ -182,15 +126,6 @@
         </ul>
     </div>
 
-    <!-- Display flash messages -->
-    {% with messages = get_flashed_messages(with_categories=True) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
 </body>
 </html>
+

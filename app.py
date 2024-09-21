@@ -86,7 +86,6 @@ def delete_task(task_id):
     
     if task_to_delete:
         tasks.remove(task_to_delete)  # Remove the task from the list
-        task_list.remove(task_to_delete)
     else:
         flash('Task not found!', 'error')
     
