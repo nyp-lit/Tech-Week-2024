@@ -120,10 +120,33 @@ def delete_task(task_id):
 
 #calendar
 
-def tasks_by_date(date):
-    # Convert date to datetime for querying MongoDB
-    datetime_obj = datetime(date.year, date.month, date.day)
-    return list(createdTasks.find({"date": datetime_obj}))
+@app.route('/events', methods=['GET'])
+def get_events_by_date():
+    # Extract query parameters for day, month, and year
+    day = request.args.get('day')
+    month = request.args.get('month')
+    year = request.args.get('year')
+
+    # Format the date string as 'YYYY-MM-DD'
+    date_str = f"{year}-{month.zfill(2)}-{day.zfill(2)}"
+
+    # Convert the date string to a datetime object for MongoDB query
+    try:
+        date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+    except ValueError:
+        return jsonify({"error": "Invalid date format"}), 400
+
+    # Query MongoDB for tasks matching this date
+    tasks = createdTasks.find({"date": date_obj})
+
+    # Convert the results to a list and convert ObjectId to a string
+    task_list = []
+    for task in tasks:
+        task['_id'] = str(task['_id'])
+        task_list.append(task)
+
+    # Return the tasks as JSON
+    return jsonify({"events": task_list})
 
 @app.route('/calendar')
 def calendar():
