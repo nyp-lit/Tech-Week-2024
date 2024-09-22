@@ -17,11 +17,11 @@ TaskManager = db.db
 @app.route('/')
 def index():
     # Check all tasks for overdue status
-    check_overdue(db, createdTasks)
+    check_overdue(db, createdEvents)
 
     # Retrieve all tasks from the database
-    tasks = db.createdTasks.find()
-    return render_template('index.html', tasks = tasks)
+    tasks = createdEvents.find()
+    return render_template('index.html', event = event)
 
 @app.route('/task')
 def task():
