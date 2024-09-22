@@ -1,160 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Calendar with Events</title>
-    <style>
-          /* MAIN */
-        body {
-            background-color: #f4f4f4;
-            color: black;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dynamic Calendar with Events</title>
+        <style>
+              /* MAIN */
+            body {
+                background-color: #f4f4f4;
+                color: black;
+            }
 
-        h1, h2 {
-            text-align: center;
-        }
-        .header {
-            background-color:  #730f73;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            color: #fff;
-            padding: 20px 20px;
-            position: relative;
-            border-radius : 5px;
-        }
-        .logo a {
-            color: white;
-            text-decoration: none;
-            font-size: 24px;
-        }
-        .main-nav {
-            list-style: none;
-            padding: 20;
-            display: flex;
-            justify-content: space-around;
-           margin: 0;
-        }
-        .main-nav li {
-            margin: 0 15px;
-        }
+            h1, h2 {
+                text-align: center;
+            }
+            .header {
+                background-color:  #730f73;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                color: #fff;
+                padding: 20px 20px;
+                position: relative;
+                border-radius : 5px;
+            }
+            .logo a {
+                color: white;
+                text-decoration: none;
+                font-size: 24px;
+            }
+            .main-nav {
+                list-style: none;
+                padding: 20;
+                display: flex;
+                justify-content: space-around;
+               margin: 0;
+            }
+            .main-nav li {
+                margin: 0 15px;
+            }
 
-        .main-nav a {
-            color: white;
-            text-decoration: none;
-        }
-        .main-nav a:hover {
-            background-color:rgb(176, 35, 164);
-            padding: 10px;
-            font-weight: bold;
-            border-radius: 5px;
-            color: white;
-        }
-        .main-nav a.active {
-            font-weight: bold;
-        }
+            .main-nav a {
+                color: white;
+                text-decoration: none;
+            }
+            .main-nav a:hover {
+                background-color:rgb(176, 35, 164);
+                padding: 10px;
+                font-weight: bold;
+                border-radius: 5px;
+                color: white;
+            }
+            .main-nav a.active {
+                font-weight: bold;
+            }
 
-       /* Calendar Styling */
-        .toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 24px 0;
-            padding: 0 20px;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
+           /* Calendar Styling */
+            .toolbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 24px 0;
+                padding: 0 20px;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+            }
 
-        .calendar__header,
-        .calendar__body {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            grid-gap: 5px;
-            background-color: white;
-            border: 1px solid #e1e1e1;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
-
-        .calendar__header {
-            text-align: center;
-            font-weight: bold;
-            text-transform: uppercase;
-            background-color: #730f73;
-            color: white;
-            padding: 10px 0;
-        }
-
-        .calendar__day {
-            padding: 20px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-            transition: background-color 0.2s;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
-
-        .calendar__day:hover {
-            background-color: #e0e0e0;
-        }
-
-        .calendar__day.selected {
-            background-color: #05c3aa;
-            color: white;
-        }
-
-        .calendar__day.empty {
-            background-color: transparent;
-            border: none;
-        }
-
-        #event-details {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-        }
-
-        select {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        /* Responsive Design */
-        @media screen and (max-width: 768px) {
             .calendar__header,
             .calendar__body {
-                grid-template-columns: repeat(2, 1fr);
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                grid-gap: 5px;
+                background-color: white;
+                border: 1px solid #e1e1e1;
+                padding: 10px;
+                border-radius: 5px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
             }
 
-            .main-nav {
-                flex-direction: column;
+            .calendar__header {
+                text-align: center;
+                font-weight: bold;
+                text-transform: uppercase;
+                background-color: #730f73;
+                color: white;
+                padding: 10px 0;
             }
 
-            .main-nav li {
-                margin: 10px 0;
+            .calendar__day {
+                padding: 20px;
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                text-align: center;
+                cursor: pointer;
+                position: relative;
+                transition: background-color 0.2s;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
             }
-        }
 
-    </style>
-</head>
-<body>
-    <header class="header">
-        <h1 class="logo"><a href="/">Task Manager</a></h1>
-        <ul class="main-nav">
-            <li><a href="/">Overview</a></li>
-            <li><a href="/task">Create</a></li>
-            <li><a href="/calendar" class="active">Calendar</a></li>
-            <li><a href="#">Contact Us</a></li>
-        </ul>
-    </header>
+            .calendar__day:hover {
+                background-color: #e0e0e0;
+            }
+
+            .calendar__day.selected {
+                background-color: #05c3aa;
+                color: white;
+            }
+
+            .calendar__day.empty {
+                background-color: transparent;
+                border: none;
+            }
+
+            #event-details {
+                margin-top: 20px;
+                padding: 15px;
+                border: 1px solid #ddd;
+                background-color: #f9f9f9;
+                border-radius: 5px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+            }
+
+            select {
+                padding: 10px;
+                font-size: 16px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+            /* Responsive Design */
+            @media screen and (max-width: 768px) {
+                .calendar__header,
+                .calendar__body {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .main-nav {
+                    flex-direction: column;
+                }
+
+                .main-nav li {
+                    margin: 10px 0;
+                }
+            }
+
+        </style>
+    </head>
+    <body>
+        <header class="header">
+            <h1 class="logo"><a href="/">Task Manager</a></h1>
+            <ul class="main-nav">
+                <li><a href="/">Overview</a></li>
+                <li><a href="/task">Create</a></li>
+                <li><a href="/calendar" class="active">Calendar</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </header>
         <main>
             <div class="toolbar">
                 <select id="month-select">
@@ -196,190 +196,247 @@
                 <div id="events-list"></div>
             </div>
 
-<div class="calendar">
+            <div class="calendar">
 
-</div>
+            </div>
         </main>
 
-    <script>
-        let lastSelectedDay = null;
-        let lastSelectedMonth = null;
-        let lastSelectedYear = null;
+        <script>
+            // Variables to track the last selected day, month, and year
+            let lastSelectedDay = null;
+            let lastSelectedMonth = null;
+            let lastSelectedYear = null;
 
-        let selectedDay = null;
-        let selectedMonth = null;
-        let selectedYear = null;
+            // Variables to track the currently selected day, month, and year
+            let selectedDay = null;
+            let selectedMonth = null;
+            let selectedYear = null;
 
-        function daysInMonth(month, year) {
-            return new Date(year, month + 1, 0).getDate();
-        }
+            /**
+             * Returns the number of days in a given month and year.
+             *
+             * @param {number} month - The month (0-indexed: 0 = January)
+             * @param {number} year - The full year (e.g., 2024)
+             * @returns {number} The number of days in the specified month and year
+             */
+            function daysInMonth(month, year) {
+                return new Date(year, month + 1, 0).getDate();  // Using JS Date object to get days in a month
+            }
 
-        function getFirstDayOfWeek(month, year) {
-            return new Date(year, month, 1).getDay();
-        }
+            /**
+             * Returns the day of the week for the first day of a given month and year.
+             *
+             * @param {number} month - The month (0-indexed)
+             * @param {number} year - The full year
+             * @returns {number} The day of the week (0 = Sunday, 1 = Monday, etc.)
+             */
+            function getFirstDayOfWeek(month, year) {
+                return new Date(year, month, 1).getDay();
+            }
 
-        function populateYearSelect() {
-            const yearSelect = document.getElementById('year-select');
-            const currentYear = new Date().getFullYear();
+            /**
+             * Populates the year dropdown (`year-select`) with a range of years.
+             * The range includes 10 years before and 10 years after the current year.
+             */
+            function populateYearSelect() {
+                const yearSelect = document.getElementById('year-select');
+                const currentYear = new Date().getFullYear();
 
-            for (let year = currentYear - 10; year <= currentYear + 10; year++) {
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
-                if (year === currentYear) {
-                    option.selected = true;
+                // Create options for 10 years before and 10 years after the current year
+                for (let year = currentYear - 10; year <= currentYear + 10; year++) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    // Select the current year by default
+                    if (year === currentYear) {
+                        option.selected = true;
+                    }
+                    yearSelect.appendChild(option);
                 }
-                yearSelect.appendChild(option);
-            }
-        }
-
-        function updateCalendar() {
-            const monthSelect = document.getElementById('month-select');
-            const yearSelect = document.getElementById('year-select');
-            const month = parseInt(monthSelect.value);
-            const year = parseInt(yearSelect.value);
-
-            const days = daysInMonth(month, year);
-            const firstDayOfWeek = getFirstDayOfWeek(month, year);
-            const calendarBody = document.getElementById('calendar-body');
-            const currentMonthText = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
-            document.getElementById('current-month').textContent = currentMonthText;
-
-            calendarBody.innerHTML = '';
-            selectedDay = null;  // Reset selected day when switching months/years
-
-            const adjustedFirstDay = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
-
-            for (let i = 0; i < adjustedFirstDay; i++) {
-                const emptyDiv = document.createElement('div');
-                emptyDiv.classList.add('calendar__day', 'empty');
-                calendarBody.appendChild(emptyDiv);
             }
 
-            for (let day = 1; day <= days; day++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.classList.add('calendar__day');
-                dayDiv.textContent = day;
+            /**
+             * Updates the calendar display for the selected month and year.
+             * It also resets the previously selected day.
+             */
+            function updateCalendar() {
+                const monthSelect = document.getElementById('month-select');
+                const yearSelect = document.getElementById('year-select');
+                const month = parseInt(monthSelect.value);  // Get selected month
+                const year = parseInt(yearSelect.value);    // Get selected year
 
-                dayDiv.addEventListener('click', () => handleDayClick(day, month, year));
-                calendarBody.appendChild(dayDiv);
+                const days = daysInMonth(month, year);  // Get number of days in the selected month/year
+                const firstDayOfWeek = getFirstDayOfWeek(month, year);  // First day of the selected month
+                const calendarBody = document.getElementById('calendar-body');
+                const currentMonthText = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
+                document.getElementById('current-month').textContent = currentMonthText;  // Display current month/year
+
+                calendarBody.innerHTML = '';  // Clear previous calendar days
+                selectedDay = null;  // Reset selected day
+
+                // Adjust the first day of the week (handle Sunday as the first day)
+                const adjustedFirstDay = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
+
+                // Add empty slots for the days before the first day of the month
+                for (let i = 0; i < adjustedFirstDay; i++) {
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.classList.add('calendar__day', 'empty');
+                    calendarBody.appendChild(emptyDiv);
+                }
+
+                // Add day elements for each day in the month
+                for (let day = 1; day <= days; day++) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.classList.add('calendar__day');
+                    dayDiv.textContent = day;
+
+                    // Add click event to handle day selection
+                    dayDiv.addEventListener('click', () => handleDayClick(day, month, year));
+                    calendarBody.appendChild(dayDiv);
+                }
             }
-        }
 
+            let eventCache = {};  // Cache to store events by date to avoid fetching the same data multiple times
 
-let eventCache = {};  // Cache for storing events by date
+            /**
+             * Handles the click event when a user selects a day on the calendar.
+             *
+             * @param {number} day - The selected day
+             * @param {number} month - The selected month (0-indexed)
+             * @param {number} year - The selected year
+             */
+            function handleDayClick(day, month, year) {
+                const allDays = document.querySelectorAll('.calendar__day');
+                allDays.forEach(dayDiv => dayDiv.classList.remove('selected'));  // Remove 'selected' class from all days
 
-function handleDayClick(day, month, year) {
-    const allDays = document.querySelectorAll('.calendar__day');
-    allDays.forEach(dayDiv => dayDiv.classList.remove('selected'));
+                selectedDay = day;
+                selectedMonth = month;
+                selectedYear = year;
 
-    selectedDay = day;
-    selectedMonth = month;
-    selectedYear = year;
+                // Format the day and month with leading zeros (e.g., 01, 02, etc.)
+                const formattedDay = day.toString().padStart(2, '0');
+                const formattedMonth = (month + 1).toString().padStart(2, '0');
 
-    // Ensure both day and month are padded with leading zeros
-    const formattedDay = day.toString().padStart(2, '0'); // Pad day to 2 digits
-    const formattedMonth = (month + 1).toString().padStart(2, '0'); // Pad month to 2 digits (month is zero-indexed)
+                // Format the date as YYYY-MM-DD
+                const selectedDateText = `${year}-${formattedMonth}-${formattedDay}`;
 
-    // Format the selected date as YYYY-MM-DD
-    const selectedDateText = `${year}-${formattedMonth}-${formattedDay}`;
+                // Update the displayed date
+                document.getElementById('selected-date').textContent = `Event(s) for ${selectedDateText}`;
 
-    // Display the formatted date with leading zeros
-    document.getElementById('selected-date').textContent = `Event(s) for ${selectedDateText}`;
+                // Highlight the selected day on the calendar
+                const dayDiv = Array.from(allDays).find(div => div.textContent === day.toString());
+                if (dayDiv) {
+                    dayDiv.classList.add('selected');
+                }
 
-    const dayDiv = Array.from(allDays).find(div => div.textContent === day.toString());
-    if (dayDiv) {
-        dayDiv.classList.add('selected');
-    }
-
-    // Load events for the selected day
-    loadEventsForDay(day, month, year);
-}
-
-function loadEventsForDay(day, month, year) {
-    const selectedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-
-    // Clear the displayed date text
-    document.getElementById('selected-date').textContent = `${selectedDate}`;
-
-    // Clear previous events to avoid duplication and incorrect display
-    const eventsList = document.getElementById('events-list');
-    eventsList.innerHTML = '';  // Always clear previous events
-
-    // Check if events for this date are already cached
-    if (eventCache[selectedDate]) {
-        displayEvents(eventCache[selectedDate], selectedDate);
-    } else {
-        // Fetch events for the selected date from the server if not cached
-        fetch(`/events?day=${day}&month=${month + 1}&year=${year}`)
-            .then(response => response.json())
-            .then(data => {
-                // Remove duplicates from the event list if needed
-                const uniqueEvents = filterUniqueEvents(data.events);
-
-                // Cache the events for this date
-                eventCache[selectedDate] = uniqueEvents;
-
-                // Display the events for the selected date only
-                displayEvents(eventCache[selectedDate], selectedDate);
-            })
-            .catch(error => {
-                console.error('Error fetching events:', error);
-            });
-    }
-}
-
-function displayEvents(events, selectedDate) {
-    const eventsList = document.getElementById('events-list');
-
-    // Clear previous events again before rendering new ones (extra safety)
-    eventsList.innerHTML = '';
-
-    if (events.length === 0) {
-        eventsList.innerHTML = '<p>No events for this day.</p>';
-    } else {
-        events.forEach(event => {
-            // Check if the event's date matches the selected date (YYYY-MM-DD format)
-            if (event.date === selectedDate) {
-                const eventDiv = document.createElement('div');
-                eventDiv.classList.add('event');
-                eventDiv.innerHTML = `
-                    <div class="event-title">${event.title}</div>
-                    <div class="event-time">${event.time}</div>
-                    <div class="event-description">${event.description}</div>
-                `;
-                eventsList.appendChild(eventDiv);
+                // Load events for the selected day
+                loadEventsForDay(day, month, year);
             }
-        });
 
-        // If no matching events are found after filtering by date, show a message
-        if (!eventsList.hasChildNodes()) {
-            eventsList.innerHTML = '<p>No events for this day.</p>';
-        }
-    }
-}
+            /**
+             * Loads events for the selected day and displays them.
+             * If the events are already cached, it fetches them from the cache.
+             *
+             * @param {number} day - The selected day
+             * @param {number} month - The selected month (0-indexed)
+             * @param {number} year - The selected year
+             */
+            function loadEventsForDay(day, month, year) {
+                // Format the selected date as YYYY-MM-DD
+                const selectedDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-// Helper function to filter out duplicate events by event title and description
-function filterUniqueEvents(events) {
-    const seenEvents = new Set();
-    return events.filter(event => {
-        const identifier = `${event.title}-${event.description}`;
-        if (!seenEvents.has(identifier)) {
-            seenEvents.add(identifier);
-            return true;
-        }
-        return false;
-    });
-}
+                // Clear previous event list
+                const eventsList = document.getElementById('events-list');
+                eventsList.innerHTML = '';
 
-document.addEventListener('DOMContentLoaded', () => {
-    populateYearSelect();
-    updateCalendar();
+                // Check if events for this date are already cached
+                if (eventCache[selectedDate]) {
+                    displayEvents(eventCache[selectedDate], selectedDate);
+                } else {
+                    // Fetch events from the server if not cached
+                    fetch(`/events?day=${day}&month=${month + 1}&year=${year}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const uniqueEvents = filterUniqueEvents(data.events);  // Filter out duplicates
 
-    document.getElementById('month-select').addEventListener('change', updateCalendar);
-    document.getElementById('year-select').addEventListener('change', updateCalendar);
-});
+                            // Cache the events for this date
+                            eventCache[selectedDate] = uniqueEvents;
 
-    </script>
-</body>
+                            // Display the events
+                            displayEvents(eventCache[selectedDate], selectedDate);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching events:', error);
+                        });
+                }
+            }
+
+            /**
+             * Displays events for a specific date.
+             *
+             * @param {Array} events - The list of events
+             * @param {string} selectedDate - The selected date in YYYY-MM-DD format
+             */
+            function displayEvents(events, selectedDate) {
+                const eventsList = document.getElementById('events-list');
+                eventsList.innerHTML = '';  // Clear previous events
+
+                if (events.length === 0) {
+                    eventsList.innerHTML = '<p>No events for this day.</p>';
+                } else {
+                    events.forEach(event => {
+                        // Only display events that match the selected date
+                        if (event.date === selectedDate) {
+                            const eventDiv = document.createElement('div');
+                            eventDiv.classList.add('event');
+                            eventDiv.innerHTML = `
+                                <div class="event-title">${event.title}</div>
+                                <div class="event-time">${event.time}</div>
+                                <div class="event-description">${event.description}</div>
+                            `;
+                            eventsList.appendChild(eventDiv);
+                        }
+                    });
+
+                    // If no events were added, display a message
+                    if (!eventsList.hasChildNodes()) {
+                        eventsList.innerHTML = '<p>No events for this day.</p>';
+                    }
+                }
+            }
+
+            /**
+             * Filters out duplicate events by checking their title and description.
+             *
+             * @param {Array} events - The list of events
+             * @returns {Array} A list of unique events
+             */
+            function filterUniqueEvents(events) {
+                const seenEvents = new Set();
+                return events.filter(event => {
+                    const identifier = `${event.title}-${event.description}`;
+                    if (!seenEvents.has(identifier)) {
+                        seenEvents.add(identifier);
+                        return true;
+                    }
+                    return false;
+                });
+            }
+
+            // Initialize the calendar when the page is fully loaded
+            document.addEventListener('DOMContentLoaded', () => {
+                const currentDate = new Date();
+                const currentMonth = currentDate.getMonth();  // Get the current month (0 = January)
+                const currentYear = currentDate.getFullYear();  // Get the current year
+
+                populateYearSelect();  // Populate the year dropdown
+
+                // Set the month and year dropdowns to the current date
+                const monthSelect = document.getElementById('month-select');
+                monthSelect.value = currentMonth;
+
+                const yearSelect = document.getElementBy
+
+        </script>
+    </body>
 </html>
