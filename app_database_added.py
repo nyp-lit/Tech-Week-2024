@@ -248,26 +248,26 @@ def check_overdue(event_id, task_id):
     
     event = db.createdEvents.find_one({"_id": ObjectId(event_id)})
     if event:
-        update_overdue(db.createdEvents, event_id, event["date"])
+        update_overdue(createdEvents, event_id, event["date"])
         print("Event is overdue.")
     
     task = db.createdSchedules.find_one({"_id": ObjectId(task_id)})
     if task:
-        update_overdue(db.createdTasks, task_id, task["date"])
+        update_overdue(createdTasks, task_id, task["date"])
         print("Task is overdue.")
 
 def check_completed(event_id, task_id):
     def update_completed(collection, id, status):
         collection.update_one({"_id" : ObjectId(id)}, {"$set" : {"status" : status == "completed"}})
     
-    event = db.createdEvents.find_one({"_id": ObjectId(event_id)})
+    event = createdEvents.find_one({"_id": ObjectId(event_id)})
     if event:
-        update_completed(db.createdEvents, event_id, event["status"])
+        update_completed(createdEvents, event_id, event["status"])
         print("Event successfully marked as completed.")
     
-    schedule = db.createdSchedules.find_one({"_id": ObjectId(task_id)})
+    schedule = createdTasks.find_one({"_id": ObjectId(task_id)})
     if schedule:
-        update_completed(db.createdSchedules, task_id, task["status"])
+        update_completed(createdTasks, task_id, task["status"])
         print("Task successfully marked as completed.")
 
 # test code
