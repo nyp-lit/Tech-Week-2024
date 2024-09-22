@@ -175,25 +175,31 @@
             {% endif %}
         {% endwith %}
 
+
+      <!-- Display Tasklist -->
         <div id="taskList">
-            <ul>
-                {% for task in tasks %}
-                    <li>
-                        <div>
-                            <strong>Task: {{ task.title }}</strong><br>
-                            <span>Description: {{ task.description }}</span><br>
-                            <span>Date: {{ task.date }} </span><br>
-                            <span>Time: {{ task.time }}</span>
-                        </div>
-                        <button class="reminder-btn" onclick="setReminder('{{ task.title }}', '{{ task.description }}', '{{ task.date }}', '{{ task.time }}')">Set Reminder</button>
-                        <form method="POST" action="{{ url_for('delete_task', task_id=task.id) }}" style="display:inline;">
-                            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this task?');">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    </li>
-                {% endfor %}
-            </ul>
+             {% if tasks %}
+        <ul>
+            {% for task in tasks %}
+                <li>
+                   <!--  <strong>ID:</strong> {{ task['_id'] }} <br>-->
+                    <strong>Title:</strong> {{ task['title'] }} <br>
+                    <strong>Description:</strong> {{ task['description'] }} <br>
+                    <strong>Date:</strong> {{ task['date'] }} <br>
+                    <strong>Time:</strong> {{ task['time'] }} <br>
+                    <strong>Completed:</strong> {{ task['completed'] }} <br>
+    <form method="POST" action="{{ url_for('delete_task', task_id=task['_id']) }}" style="display:inline;">
+                        <button type="submit" title="Delete Task" style="border:none; background:none; cursor:pointer;">
+                            <i class="fas fa-trash" style="color:red;"></i>
+                        </button>
+                    </form>
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tasks available.</p>
+    {% endif %}
         </div>
     </div>
 

@@ -1,114 +1,210 @@
+from flask import Flask, render_template, redirect, url_for, request, flash,jsonify
+import os
+from flask_pymongo import PyMongo # pip install Flask-pymongo
+from bson import ObjectId
 from datetime import datetime
-from flask import Flask, render_template, redirect, url_for, request,flash,jsonify
 
 app = Flask(__name__, template_folder='templates')
-
-# In-memory task list to simulate a database - to be changed to database 
-tasks = []
-
-# Dictionary to store tasks by date
-tasks_by_date = {}
+app.config["MONGO_URI"] = "mongodb://localhost:27017/TaskManager"
+db = PyMongo(app)
+TaskManager = db.db 
 
 
-# Function to get the events for that specific date
-def get_task_by_date(date):
-    return tasks_by_date.get(date, [])
-
-#Route to direct to index page 
+# Route to List All Tasks (Read)
 @app.route('/')
 def index():
+     # Retrieve all tasks from the database
+    tasks = createdTasks.find()
     return render_template('index.html', tasks=tasks)
 
 
-#Route direct to tasks page
 @app.route('/task')
 def task():
+    tasks = createdTasks.find()
     return render_template('task.html', tasks=tasks)
 
 
-# Create route - task form 
+#Create task route 
 @app.route('/create', methods=['GET', 'POST'])
 def create_task():
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
-        date = request.form['date']  # Get date input
+        date = request.form['date']
         start_time = request.form['start_time']
         end_time = request.form['end_time']
-        # Store date and time separately
-        new_task = {
-            'id': len(tasks) + 1,
+        
+        # Convert the date string to a datetime object
+        try:
+            date_obj = datetime.strptime(date, '%Y-%m-%d')  # Convert 'YYYY-MM-DD' string to date object
+        except ValueError:
+            return jsonify({"error": "Invalid date format. Please use YYYY-MM-DD."}), 400
+        
+        # Create a new task document
+        task = {
             'title': title,
             'description': description,
-            'date': date,  
-            'time': start_time + ' - ' + end_time,  # Store time range (start & end)
+            'date': date_obj,  # Use the converted datetime object here
+            'time': start_time + ' - ' + end_time,
             'completed': False
         }
-        tasks.append(new_task)
+
+        # Insert the task into the MongoDB database
+        createdTasks.insert_one(task)
+        print("Task created.")
         
-          # task grouped by date
-        if date not in tasks_by_date:
-            tasks_by_date[date] = []
-        tasks_by_date[date].append(new_task)
-      
         return redirect(url_for('index'))
     
-    return render_template('task.html')
-
-#update route 
-@app.route('/edit/<int:task_id>', methods=['GET', 'POST'])
-def edit_task(task_id):
-    task = next((task for task in tasks if task['id'] == task_id), None)
+         # Fetch all tasks to display in the "Edit" section
+    tasks = list(createdTasks.find())
     
-    if task is None:  # Check if task was found
-        return redirect(url_for('index'))  # Redirect to the task list or index page
+    return render_template('task.html', tasks=tasks)
+
+#edit 
+@app.route('/edit/<string:task_id>', methods=['GET', 'POST'])
+def edit_task(task_id):
+    task = createdTasks.find_one({"_id": ObjectId(task_id)})
+    
+    if task is None:
+        flash("Task not found.", "warning")
+        return redirect(url_for('index'))
 
     if request.method == 'POST':
-        # Update the task with the submitted data
-        task['title'] = request.form['title']
-        task['description'] = request.form['description']
-        task['date'] = request.form['date']
-        task['time'] = request.form['start_time'] + ' - ' + request.form['end_time']
+        updated_fields = {}
 
-        return redirect(url_for('index'))  # Redirect to the task list after editing
+        if 'title' in request.form and request.form['title']:
+            updated_fields['title'] = request.form['title']
+        if 'description' in request.form and request.form['description']:
+            updated_fields['description'] = request.form['description']
+        
+        if 'date' in request.form and request.form['date']:
+            try:
+                date_obj = datetime.strptime(request.form['date'], '%Y-%m-%d')
+                updated_fields['date'] = date_obj
+            except ValueError:
+                return render_template('edit_task.html', task=task, error_message="Invalid date format. Please use YYYY-MM-DD.")
+        
+        if 'start_time' in request.form and request.form['start_time']:
+            if 'end_time' in request.form and request.form['end_time']:
+                updated_fields['time'] = f"{request.form['start_time']} - {request.form['end_time']}"
+
+        print("Updated fields:", updated_fields)  # Debugging line
+
+        if updated_fields:
+            try:
+                result = createdTasks.update_one({"_id": ObjectId(task_id)}, {"$set": updated_fields})
+                if result.matched_count > 0:
+                    return redirect(url_for('index'))
+                else:
+                    flash("No changes were made to the task.", "info")
+            except Exception as e:
+                flash(f"An error occurred while updating: {str(e)}", "danger")
+        
+        else:
+            return render_template('edit_task.html', task=task)
     
-    return render_template('edit.html', task=task)  # Render edit template if task is found
+    return render_template('edit_task.html', task=task)
+
 
 #Delete route 
-@app.route('/delete/<int:task_id>', methods=['POST'])
+@app.route('/delete/<string:task_id>', methods=['POST'])
 def delete_task(task_id):
-    global tasks  # Make sure to reference the global tasks list
-    # Find the task by its ID
-    task_to_delete = next((task for task in tasks if task['id'] == task_id), None)
+    createdTasks.delete_one({"_id": ObjectId(task_id)})
     
-    if task_to_delete:
-        tasks.remove(task_to_delete)  # Remove the task from the list
-    else:
-        flash('Task not found!', 'error')
-    
-    return redirect(url_for('index'))  # Redirect back to the task list
+    return redirect(url_for('index'))
 
-#Calendar page to get events by date 
+#calendar
+
+def tasks_by_date(date):
+    # Convert date to datetime for querying MongoDB
+    datetime_obj = datetime(date.year, date.month, date.day)
+    return list(createdTasks.find({"date": datetime_obj}))
+
 @app.route('/calendar')
 def calendar():
-    return render_template('calendar.html', get_task_by_date = get_task_by_date)
+    # Fetch all tasks and sort them by date
+    tasks = createdTasks.find().sort("date")  # Sorting by date
 
-@app.route('/events', methods=['GET'])
-def get_events():
-    day = int(request.args.get('day'))
-    month = int(request.args.get('month'))
-    year = int(request.args.get('year'))
+    # Convert cursor to a list and convert ObjectId to string
+    tasklist = []
+    for task in tasks:
+        task['_id'] = str(task['_id'])  # Convert ObjectId to string
+        tasklist.append(task)
 
-    # Create a date object and format it with leading zeros
-    selected_date = datetime(year, month, day)
-    formatted_date = selected_date.strftime('%Y-%m-%d')
+    return render_template('calendar.html', tasks=tasklist)
 
-    events = get_task_by_date(formatted_date)  #function to fetch from db 
 
-    if events:
-        return jsonify({'events': events})
-    else:
-        return jsonify({'events': []}), 200  # Return empty list if no events
+def create_collections(TaskManager):
+    collections = [
+        {
+            "name": "createdTasks",
+            "validator": {
+                '$jsonSchema': {
+                    'bsonType': 'object',
+                    'required': ['title', 'description', 'date'],
+                    'properties': {
+                        'title': {"bsonType": "string"},
+                        'description': {"bsonType": "string"},
+                        'date': {"bsonType": "date"},
+                        'time': {"bsonType": "string"},
+                        # 'overdue': {"bsonType": "bool"},
+                        # 'completed': {"bsonType": "bool"},
+                    }
+                }
+            }
+        },
+        {
+            "name": "deletedTasks",
+            "validator": {
+                '$jsonSchema': {
+                    'bsonType': 'object',
+                    'required': ['title', 'description', 'date'],
+                    'properties': {
+                        'title': {"bsonType": "string"},
+                        'description': {"bsonType": "string"},
+                        # 'status': {"bsonType": "string"},
+                        'date': {"bsonType": "date"},
+                        'start_time': {"bsonType": "string"},
+                        'end_time': {"bsonType": "string"},
+                        'overdue': {"bsonType": "bool"},
+                        'completed': {"bsonType": "bool"},
+                    }
+                }
+            }
+        },
+        {
+    "name": "updatedTasks",
+    "validator": {
+        '$jsonSchema': {
+            'bsonType': 'object',
+            'properties': {
+                'title': {"bsonType": "string"},  # Title of the task
+                'description': {"bsonType": "string"},  # Description of the task
+                'date': {"bsonType": "date"},           # Date of the task
+                'time': {"bsonType": "string"},         # Time range for the task (e.g., "09:00 - 10:00")
+                'start_time': {"bsonType": "string"},   # Start time
+                'end_time': {"bsonType": "string"},     # End time
+                'overdue': {"bsonType": "bool"},        # Overdue status
+                'completed': {"bsonType": "bool"},      # Completion status
+            }
+        }
+    }
+}
+
+    ]
+
+    existing_collections = TaskManager.list_collection_names()
+
+    for collection in collections:
+        if collection["name"] not in existing_collections:
+            TaskManager.create_collection(collection["name"], validator=collection["validator"])
+
+# Create collections when the app starts
+create_collections(TaskManager)
+
+
+createdTasks = db.db["createdTasks"]
+
 
 
 if __name__ == '__main__':

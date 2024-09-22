@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+</head>
+<body>
+    <h1>Edit Task</h1>
+
+ <!-- Flash Messages -->
+    <div id="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <form method="POST" action="{{ url_for('edit_task', task_id=task['_id']) }}">
+        <input type="text" name="title" placeholder="Task Title" value="{{ task['event_name'] }}" required>
+        <input type="text" name="description" placeholder="Task Description" value="{{ task['description'] }}" required>
+        <input type="date" name="date" value="{{ task['date'] }}" required>
+        <label for="start_time">Start Time:</label>
+        <input type="time" name="start_time" value="{{ task['time'].split(' - ')[0] }}" required>
+        <label for="end_time">End Time:</label>
+        <input type="time" name="end_time" value="{{ task['time'].split(' - ')[1] }}" required>
+        <button type="submit">Update Task</button>
+    </form>
+    <a href="{{ url_for('index') }}">Cancel</a>
+</body>
+</html>

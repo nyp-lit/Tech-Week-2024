@@ -111,23 +111,27 @@
     </form>
 
 <br>
-
- <h3>Edit Task</h3>
-    <div id="taskList">
-        <ul>
-            {% for task in tasks %}
-                <li>
-                    <div>
-                        <strong>{{ task.title }}</strong><br>
-                        <span>{{ task.description }}</span><br>
-                        <span>Date: {{ task.date }}</span><br>
-                        <span>Time: {{ task.time }}</span><br>
-                        <a href="{{ url_for('edit_task', task_id=task.id) }}">Edit</a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+<h3>Edit Task</h3>
+<div id="taskList">
+ {% if tasks %}
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <div>
+                    <strong>{{ task['title'] }}</strong><br>
+                    <span>{{ task['description'] }}</span><br>
+                    <span>Date: {{ task['date'] }}</span><br>
+                    <span>Time: {{ task['time'] }}</span><br>
+ <a href="{{ url_for('edit_task', task_id=task['_id']) }}" class="edit-button">Edit</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+ {% else %}
+        <p>No tasks available.</p>
+    {% endif %}
+        </div>
+</div>
 
 </body>
 </html>
