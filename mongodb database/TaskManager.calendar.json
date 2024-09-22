@@ -1,9 +1,0 @@
-[{
-  "_id": {
-    "$oid": "66ebb1f8443df9d798c73bf9"
-  },
-  "background": "Purple",
-  "dateCurrently": {
-    "$date": "2021-07-15T03:30:45.000Z"
-  }
-}]
