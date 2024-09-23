@@ -156,8 +156,7 @@
         <ul class="main-nav">
             <li><a href="/" class="active">Overview</a></li>
             <li><a href="/task">Create</a></li>
-            <li><a href="/calendar">Calendar</a></li>
-            <li><a href="#">Contact Us</a></li>
+            <li><a href="/calendar">Calendar</a></li>   
         </ul>
     </header>
 
@@ -182,12 +181,12 @@
         <ul>
             {% for task in tasks %}
                 <li>
-                   <!--  <strong>ID:</strong> {{ task['_id'] }} <br>-->
-                    <strong>Title:</strong> {{ task['title'] }} <br>
-                    <strong>Description:</strong> {{ task['description'] }} <br>
-                    <strong>Date:</strong> {{ task['date'] }} <br>
-                    <strong>Time:</strong> {{ task['time'] }} <br>
-                    <strong>Completed:</strong> {{ task['completed'] }} <br>
+                   <!-- <strong>ID:</strong> {{ task['_id'] }} -->
+                    <strong>Title:</strong> {{ task['title'] }} 
+                    <strong>Description:</strong> {{ task['description'] }} 
+                    <strong>Date:</strong> {{ task['date'] }} 
+                    <strong>Time:</strong> {{ task['time'] }} 
+                    <!-- <strong>Completed:</strong> {{ task['completed'] }} <br> -->
     <form method="POST" action="{{ url_for('delete_task', task_id=task['_id']) }}" style="display:inline;">
                         <button type="submit" title="Delete Task" style="border:none; background:none; cursor:pointer;">
                             <i class="fas fa-trash" style="color:red;"></i>
