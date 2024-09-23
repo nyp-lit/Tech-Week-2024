@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Task</title>
+     <!--favicon-->
+     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
         <style>
         body {
             font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -11,170 +13,186 @@
             color: #333;
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             text-align: center;
         }
+
         /* Navbar Styles */
         .header {
-            background-color:  #730f73;
+            background-color: #730f73;
             color: #fff;
             padding: 20px 20px;
             position: relative;
-            border-radius : 5px;
+            border-radius: 5px;
         }
+
         .logo a {
             color: white;
             text-decoration: none;
             font-size: 24px;
         }
+
         .main-nav {
             list-style: none;
             padding: 20;
             display: flex;
             justify-content: space-around;
             margin: 0;
+            margin-right: 5%;
         }
+
         .main-nav li {
             margin: 0 15px;
         }
+
         .main-nav a {
             color: white;
             text-decoration: none;
         }
+
         .main-nav a:hover {
-            background-color:  rgb(176, 35, 164);;
+            background-color: rgb(176, 35, 164);
+            ;
             padding: 10px;
             font-weight: bold;
             border-radius: 5px;
             color: white;
         }
+
         .main-nav a.active {
             font-weight: bold;
         }
 
-    form {
-        display: flex;
-        justify-content: center;
-        gap: 16px;
-        flex-wrap: wrap;
-        max-width: 600px;
-        margin: 20px auto;
-    }
+        form {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            max-width: 600px;
+            margin: 20px auto;
+        }
 
-    form input, form button {
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid #333;
-        width: calc(50% - 16px); /* Make inputs equal width, minus the gap */
-        box-sizing: border-box; /* Ensure padding is included in width */
-    }
+        form input,
+        form button {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            width: calc(50% - 16px);
+            /* Make inputs equal width, minus the gap */
+            box-sizing: border-box;
+            /* Ensure padding is included in width */
+        }
 
-    form input[type="date"], form input[type="time"] {
-        width: calc(50% - 16px); /* Force date and time inputs to same width as text inputs */
-    }
-<!--The update button-->
-    form input:hover {
-        background-color: #ddd;
-    }
+        form input[type="date"],
+        form input[type="time"] {
+            width: calc(50% - 16px);
+            /* Force date and time inputs to same width as text inputs */
+        }
 
-    form button {
-        font-family: inherit;
-        background-color: rgb(142, 62, 185);
-        padding: 10px;
-        color: white;
-        border: none;
-        width: 100%;
-        max-width: 25%; /* Keep button smaller */
-        text-align: center;
-        cursor: pointer;
-    }
+        form input:hover {
+            background-color: #ddd;
+        }
 
-    form button:hover {
-        background-color: rgb(110, 50, 143);
-    }
+        form button {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+            background-color: rgb(142, 62, 185);
+            padding: 10px;
+            color: white;
+            border: none;
+            width: 100%;
+            max-width: 25%;
+            /* Keep button smaller */
+            text-align: center;
+            cursor: pointer;
+        }
 
-    form button i {
-        margin-right: 8px;
-    }
+        form button:hover {
+            background-color: rgb(110, 50, 143);
+        }
 
-    /* Task list styles */
-    #taskList {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+        form button i {
+            margin-right: 8px;
+        }
 
-    #taskList ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 20px auto;
-        max-width: 600px;
-        width: 100%;
-    }
+        /* Task list styles */
+        #taskList {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    #taskList li {
-        background-color: #fff;
-        margin: 10px 0;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
+        #taskList ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 600px;
+            width: 100%;
+        }
 
-    #taskList li div {
-        flex-grow: 1;
-    }
+        #taskList li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
 
-    #taskList li strong {
-        font-size: 18px;
-        color: #730f73;
-    }
+        #taskList li div {
+            flex-grow: 1;
+        }
 
-    #taskList li span {
-        display: block;
-        margin-top: 5px;
-        color: #666;
-    }
+        #taskList li strong {
+            font-size: 18px;
+            color: #730f73;
+        }
 
-    #taskList li a {
-        color: #730f73;
-        text-decoration: none;
-        font-weight: bold;
-        padding: 8px 12px;
-        background-color: #eee;
-        border-radius: 4px;
-    }
+        #taskList li span {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+        }
 
-    #taskList li a:hover {
-        background-color: #730f73;
-        color: white;
-    }
+        #taskList li a {
+            color: #730f73;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            background-color: #eee;
+            border-radius: 4px;
+        }
 
-    /* Back to Task List Button Styling */
+        #taskList li a:hover {
+            background-color: #730f73;
+            color: white;
+        }
 
-    #back-button a{
-    text-decoration: none;
-    padding: 5px 15px;
-    color: white;
-    background-color: rgb(142, 62, 185);
-    border-radius: 15px;
-    font-weight: bold;
-    text-align: center;
-    margin-right: auto;
-    width: 5%;
-    font-size: smaller;
-    display: inline-block;
-    }
+        /* Back to Task List Button Styling */
 
-    #back-button a:hover{
-        background-color: #730f73;
-        color: white;
-    }
+        #back-button a {
+            text-decoration: none;
+            padding: 5px 15px;
+            color: white;
+            background-color: rgb(142, 62, 185);
+            border-radius: 15px;
+            font-weight: bold;
+            text-align: center;
+            margin-right: auto;
+            width: 5%;
+            font-size: smaller;
+            display: inline-block;
+        }
 
+        #back-button a:hover {
+            background-color: #730f73;
+            color: white;
+        }
     </style>
 </head>
 <body>

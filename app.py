@@ -10,14 +10,14 @@ db = PyMongo(app)
 TaskManager = db.db 
 
 
-# Route to List All Tasks (Read)
+# Route to main (index) page 
 @app.route('/')
 def index():
      # Retrieve all tasks from the database
     tasks = createdTasks.find()
     return render_template('index.html', tasks=tasks)
 
-
+# Route to task page 
 @app.route('/task')
 def task():
     tasks = createdTasks.find()
@@ -113,8 +113,7 @@ def delete_task(task_id):
     
     return redirect(url_for('index'))
 
-#calendar
-
+#For Calendar retrieve to display tasks 
 @app.route('/events', methods=['GET'])
 def get_events_by_date():
     # Extract query parameters for day, month, and year

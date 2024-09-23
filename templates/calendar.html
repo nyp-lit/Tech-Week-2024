@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--favicon-->
+     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
     <title>Dynamic Calendar with Events</title>
-    <style>
+     <style>
         /* MAIN */
         body {
             background-color: #f4f4f4;
             color: black;
         }
-
+    
         h1, h2 {
             text-align: center;
         }
@@ -36,6 +38,7 @@
             display: flex;
             justify-content: space-around;
             margin: 0;
+            margin-right: 5%;
         }
 
         .main-nav li {
@@ -151,7 +154,6 @@
             <li><a href="/">Overview</a></li>
             <li><a href="/task">Create</a></li>
             <li><a href="/calendar" class="active">Calendar</a></li>
-            <li><a href="#">Contact Us</a></li>
         </ul>
     </header>
     <main>
