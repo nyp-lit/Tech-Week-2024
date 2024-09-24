@@ -255,46 +255,53 @@
                 }
             }
 
-            /**
-             * Updates the calendar display for the selected month and year.
-             * It also resets the previously selected day.
-             */
-            function updateCalendar() {
-                const monthSelect = document.getElementById('month-select');
-                const yearSelect = document.getElementById('year-select');
-                const month = parseInt(monthSelect.value);  // Get selected month
-                const year = parseInt(yearSelect.value);    // Get selected year
+/**
+ * Updates the calendar display for the selected month and year.
+ * It also resets the previously selected day and clears the events list.
+ */
+function updateCalendar() {
+    const monthSelect = document.getElementById('month-select');
+    const yearSelect = document.getElementById('year-select');
+    const month = parseInt(monthSelect.value);  // Get selected month
+    const year = parseInt(yearSelect.value);    // Get selected year
 
-                const days = daysInMonth(month, year);  // Get number of days in the selected month/year
-                const firstDayOfWeek = getFirstDayOfWeek(month, year);  // First day of the selected month
-                const calendarBody = document.getElementById('calendar-body');
-                const currentMonthText = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
-                document.getElementById('current-month').textContent = currentMonthText;  // Display current month/year
+    const days = daysInMonth(month, year);  // Get number of days in the selected month/year
+    const firstDayOfWeek = getFirstDayOfWeek(month, year);  // First day of the selected month
+    const calendarBody = document.getElementById('calendar-body');
+    const currentMonthText = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
+    document.getElementById('current-month').textContent = currentMonthText;  // Display current month/year
 
-                calendarBody.innerHTML = '';  // Clear previous calendar days
-                selectedDay = null;  // Reset selected day
+    calendarBody.innerHTML = '';  // Clear previous calendar days
+    selectedDay = null;  // Reset selected day
 
-                // Adjust the first day of the week (handle Sunday as the first day)
-                const adjustedFirstDay = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
+    // Adjust the first day of the week (handle Sunday as the first day)
+    const adjustedFirstDay = (firstDayOfWeek === 0) ? 6 : firstDayOfWeek - 1;
 
-                // Add empty slots for the days before the first day of the month
-                for (let i = 0; i < adjustedFirstDay; i++) {
-                    const emptyDiv = document.createElement('div');
-                    emptyDiv.classList.add('calendar__day', 'empty');
-                    calendarBody.appendChild(emptyDiv);
-                }
+    // Add empty slots for the days before the first day of the month
+    for (let i = 0; i < adjustedFirstDay; i++) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.classList.add('calendar__day', 'empty');
+        calendarBody.appendChild(emptyDiv);
+    }
 
-                // Add day elements for each day in the month
-                for (let day = 1; day <= days; day++) {
-                    const dayDiv = document.createElement('div');
-                    dayDiv.classList.add('calendar__day');
-                    dayDiv.textContent = day;
+    // Add day elements for each day in the month
+    for (let day = 1; day <= days; day++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.classList.add('calendar__day');
+        dayDiv.textContent = day;
 
-                    // Add click event to handle day selection
-                    dayDiv.addEventListener('click', () => handleDayClick(day, month, year));
-                    calendarBody.appendChild(dayDiv);
-                }
-            }
+        // Add click event to handle day selection
+        dayDiv.addEventListener('click', () => handleDayClick(day, month, year));
+        calendarBody.appendChild(dayDiv);
+    }
+
+    // Clear the event list when the month or year is changed
+    const eventsList = document.getElementById('events-list');
+    eventsList.innerHTML = '';  // Clear the displayed events
+
+    // Reset the selected date text
+    document.getElementById('selected-date').textContent = 'selected date';
+}
 
             let eventCache = {};  // Cache to store events by date to avoid fetching the same data multiple times
 
