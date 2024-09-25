@@ -142,6 +142,8 @@
         <input type="time" name="end_time" value="{{ task['time'].split(' - ')[1] }}" required>
         <button type="submit">Update Task</button>
     </form>
+    <div id="Cancel">
     <a href="{{ url_for('index') }}">Cancel</a>
+    </div>
 </body>
 </html>
