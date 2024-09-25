@@ -1,6 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, flash,jsonify
-import os
-from flask_pymongo import PyMongo # pip install Flask-pymongo
+from flask_pymongo import PyMongo 
 from bson import ObjectId
 from datetime import datetime
 
@@ -169,8 +168,6 @@ def create_collections(TaskManager):
                         'description': {"bsonType": "string"},
                         'date': {"bsonType": "date"},
                         'time': {"bsonType": "string"},
-                        # 'overdue': {"bsonType": "bool"},
-                        # 'completed': {"bsonType": "bool"},
                     }
                 }
             }
@@ -184,12 +181,9 @@ def create_collections(TaskManager):
                     'properties': {
                         'title': {"bsonType": "string"},
                         'description': {"bsonType": "string"},
-                        # 'status': {"bsonType": "string"},
                         'date': {"bsonType": "date"},
                         'start_time': {"bsonType": "string"},
                         'end_time': {"bsonType": "string"},
-                        'overdue': {"bsonType": "bool"},
-                        'completed': {"bsonType": "bool"},
                     }
                 }
             }
@@ -206,8 +200,6 @@ def create_collections(TaskManager):
                 'time': {"bsonType": "string"},         # Time range for the task (e.g., "09:00 - 10:00")
                 'start_time': {"bsonType": "string"},   # Start time
                 'end_time': {"bsonType": "string"},     # End time
-                'overdue': {"bsonType": "bool"},        # Overdue status
-                'completed': {"bsonType": "bool"},      # Completion status
             }
         }
     }
