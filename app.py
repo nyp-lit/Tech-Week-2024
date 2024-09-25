@@ -23,6 +23,21 @@ def task():
     return render_template('task.html', tasks=tasks)
 
 
+# Route to calendar page 
+@app.route('/calendar')
+def calendar():
+    # Fetch all tasks and sort them by date
+    tasks = createdTasks.find().sort("date")  # Sorting by date
+
+    # Convert cursor to a list and convert ObjectId to string
+    tasklist = []
+    for task in tasks:
+        task['_id'] = str(task['_id'])  # Convert ObjectId to string
+        tasklist.append(task)
+
+    return render_template('calendar.html', tasks=tasklist)
+
+
 #Create task route 
 @app.route('/create', methods=['GET', 'POST'])
 def create_task():
@@ -87,7 +102,7 @@ def edit_task(task_id):
             if 'end_time' in request.form and request.form['end_time']:
                 updated_fields['time'] = f"{request.form['start_time']} - {request.form['end_time']}"
 
-        print("Updated fields:", updated_fields)  # Debugging line
+        print("Updated fields:", updated_fields)  
 
         if updated_fields:
             try:
@@ -140,19 +155,6 @@ def get_events_by_date():
 
     # Return the tasks as JSON
     return jsonify({"events": task_list})
-
-@app.route('/calendar')
-def calendar():
-    # Fetch all tasks and sort them by date
-    tasks = createdTasks.find().sort("date")  # Sorting by date
-
-    # Convert cursor to a list and convert ObjectId to string
-    tasklist = []
-    for task in tasks:
-        task['_id'] = str(task['_id'])  # Convert ObjectId to string
-        tasklist.append(task)
-
-    return render_template('calendar.html', tasks=tasklist)
 
 
 def create_collections(TaskManager):
