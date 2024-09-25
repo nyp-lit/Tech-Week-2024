@@ -168,3 +168,253 @@
     </script>
   </body>
 </html>
+
+
+
+
+
+
+original code before changes:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+<!--favicon-->
+     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .header {
+            background-color:  #730f73;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: #fff;
+            padding: 20px 20px;
+            position: relative;
+            border-radius : 5px;
+          }
+        .logo a {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        .main-nav {
+            list-style: none;
+            padding: 20;
+            display: flex;
+            justify-content: space-around;
+            margin: 0;
+            margin-right: 5%;
+        }
+        .main-nav li {
+            margin: 0 15px;
+        }
+        .main-nav a {
+            color: white;
+            text-decoration: none;
+        }
+        .main-nav a:hover {
+            background-color:rgb(176, 35, 164);
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 5px;
+            color: white;
+        }
+        .main-nav a.active {
+            font-weight: bold;
+        }
+
+        #taskList ul {
+            list-style: none;
+            padding: 0;
+        }
+        #taskList li {
+            display: flex;
+            justify-content: space-between;
+            background-color: #fff;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            align-items: center;
+        }
+        .alert {
+            color: green;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: red;
+            font-size: 20px;
+        }
+        .delete-btn:hover {
+            color: darkred;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .main-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            .main-nav li {
+                margin: 5px 0;
+            }
+        }
+
+            #taskList {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #taskList ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 20px auto;
+        max-width: 1000px;  /* Limit the width of the task list */
+        width: 100%;  /* Make it responsive */
+    }
+
+    #taskList li {
+        background-color: #fff;
+        margin: 10px 0;  /* Adds vertical space between tasks */
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;  /* Make tasks take full width of container */
+    }
+
+    #taskList li div {
+        flex-grow: 1;
+    }
+
+    #taskList li strong {
+        font-size: 18px;
+        color: #730f73;
+    }
+
+    #taskList li span {
+        display: block;
+        margin-top: 5px;
+        color: #666;
+    }
+
+    #taskList li a {
+        color: #730f73;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 8px 12px;
+        background-color: #eee;
+        border-radius: 4px;
+    }
+
+    #taskList li a:hover {
+        background-color: #730f73;
+        color: white;
+    }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Task Manager</h1>
+        <ul class="main-nav">
+            <li><a href="/" class="active">Overview</a></li>
+            <li><a href="/task">Create</a></li>
+            <li><a href="/calendar">Calendar</a></li>   
+        </ul>
+    </header>
+
+    <div class="container">
+        <h1>Your Tasks</h1>
+
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert">
+                    {% for category, message in messages %}
+                        <div class="{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+
+      <!-- Display Tasklist -->
+        <div id="taskList">
+             {% if tasks %}
+        <ul>
+            {% for task in tasks %}
+                <li>
+                   <!-- <strong>ID:</strong> {{ task['_id'] }} -->
+                    <strong>Title:</strong> {{ task['title'] }} 
+                    <strong>Description:</strong> {{ task['description'] }} 
+                    <strong>Date:</strong> {{ task['date'] }} 
+                    <strong>Time:</strong> {{ task['time'] }} 
+                    <!-- <strong>Completed:</strong> {{ task['completed'] }} <br> -->
+    <form method="POST" action="{{ url_for('delete_task', task_id=task['_id']) }}" style="display:inline;">
+                        <button type="submit" title="Delete Task" style="border:none; background:none; cursor:pointer;">
+                            <i class="fas fa-trash" style="color:red;"></i>
+                        </button>
+                    </form>
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tasks available.</p>
+    {% endif %}
+        </div>
+    </div>
+
+    <script>
+// Function to set a reminder
+function setReminder(title, description, date, time) {
+    // Split the time string to get the start time
+    const startTime = time.split(' - ')[0]; // Get the start time
+
+    const dateTimeString = ${date}T${startTime}:00;
+    const reminderTime = new Date(dateTimeString);
+
+    const currentTime = new Date();
+    const timeDifference = reminderTime - currentTime;
+    console.log(timeDifference);
+
+    if (timeDifference > 0) {
+        // Schedule notification
+        if (Notification.permission === "granted") {
+            var notification = new Notification(title, {
+                body: description,
+                requireInteraction: true
+            });
+        } else {
+            console.log("Notification permission not granted.");
+        }
+
+        // Ask for notification permission if not granted
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+    } else {
+        alert("The scheduled reminder time is in the past!");
+    }
+}
+
+    </script>
+</body>
+</html>
