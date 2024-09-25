@@ -99,22 +99,7 @@
     form button:hover {
         background-color: #5c0b5c;
     }
-
-    #Cancel a {
-        text-decoration: none;
-        padding: 10px 20px;
-        color: white;
-        background-color: rgb(142, 62, 185);
-        border-radius: 5px;
-        font-weight: bold;
-        text-align: center;
-        margin-top: 10px;
-        display: inline-block;
-    }
-
-    #Cancel a:hover {
-        background-color: #730f73;
-    }
+  
 </style>
 <body>
     <h1>Edit Task</h1>
@@ -142,8 +127,8 @@
         <input type="time" name="end_time" value="{{ task['time'].split(' - ')[1] }}" required>
         <button type="submit">Update Task</button>
     </form>
-    <div id="Cancel">
+
     <a href="{{ url_for('index') }}">Cancel</a>
-    </div>
+
 </body>
 </html>
