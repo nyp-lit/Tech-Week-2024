@@ -8,7 +8,8 @@ pymongo - Core library for interacting with MongoDB databases. It allows you to 
 
 Steps to setup:
 1.Select python interpreter
-2.Python 3.11.4('.venv') recommended 
+2.Create a virtual Environment 
+2.Choose your python version
 3.Under terminal Install the following packages:
 pip install Flask 
 pip install Flask-PyMongo
