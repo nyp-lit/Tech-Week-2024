@@ -22,5 +22,5 @@ python -m venv myenv
   - Install flask
   - Install mongodb
   - Install flask-pymongo
-  - 
+    
 **Install the above packages using "pip install -r requirements.txt"**
