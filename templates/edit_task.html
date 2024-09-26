@@ -5,102 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!--favicon-->
      <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+     <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+     <link rel='stylesheet' type="text/css" href="{{ url_for('static', filename='css/edit_task.css') }}">
+
     <title>Edit Task</title>
 </head>
 
-<style>
-    body {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        background-color: #f4f4f4;
-        color: #333;
-    }
-
-    h1 {
-        text-align: center;
-        background-color: #730f73;
-        color: white;
-        padding: 20px;
-        margin: 0;
-    }
-
-    /* Flash message styling */
-    #flash-messages ul {
-        list-style: none;
-        padding: 0;
-        margin: 10px auto;
-        max-width: 600px;
-        text-align: center;
-    }
-
-    #flash-messages li {
-        padding: 10px;
-        border-radius: 5px;
-        background-color: #f9d6d5;
-        color: #a94442;
-        margin-bottom: 10px;
-    }
-
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        max-width: 600px;
-        margin: 20px auto;
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    form .form-group {
-        width: 100%;
-        margin-bottom: 16px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 16px;
-    }
-
-    form label {
-        flex: 1;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 8px;
-    }
-
-    form input[type="text"],
-    form input[type="date"],
-    form input[type="time"] {
-        flex: 2;
-        padding: 10px;
-        margin: 15px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        width: calc(50% - 16px);
-    }
-
-    form input[type="time"] {
-        margin: 5px;
-    }
-
-    form button {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        background-color: rgb(142, 62, 185);
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 16px;
-    }
-
-    form button:hover {
-        background-color: #5c0b5c;
-    }
-  
-</style>
 <body>
     <h1>Edit Task</h1>
 

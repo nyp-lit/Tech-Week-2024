@@ -1,0 +1,55 @@
+#taskList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#taskList ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px auto;
+    max-width: 1000px;  /* Limit the width of the task list */
+    width: 100%;  /* Make it responsive */
+}
+
+#taskList li {
+    background-color: #fff;
+    margin: 10px 0;  /* Adds vertical space between tasks */
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;  /* Make tasks take full width of container */
+}
+
+#taskList li div {
+    flex-grow: 1;
+}
+
+#taskList li strong {
+    font-size: 18px;
+    color: #730f73;
+}
+
+#taskList li span {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+}
+
+#taskList li a {
+    color: #730f73;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    background-color: #eee;
+    border-radius: 4px;
+}
+
+#taskList li a:hover {
+    background-color: #730f73;
+    color: white;
+}

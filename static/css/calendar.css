@@ -1,0 +1,66 @@
+/* Calendar Styling */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 24px 0;
+    padding: 0 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.calendar__header,
+.calendar__body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 5px;
+    background-color: white;
+    border: 1px solid #e1e1e1;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.calendar__header {
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #730f73;
+    color: white;
+    padding: 10px 0;
+}
+
+.calendar__day {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.calendar__day:hover {
+    background-color: #e0e0e0;
+}
+
+.calendar__day.selected {
+    background-color: #05c3aa;
+    color: white;
+}
+
+.calendar__day.empty {
+    background-color: transparent;
+    border: none;
+}
+
+#event-details {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
