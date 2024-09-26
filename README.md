@@ -18,6 +18,7 @@ Packages used:
   - set up virtual environment
 
 Create a virtual environment 
+
 python -m venv myenv
 
   - install flask
