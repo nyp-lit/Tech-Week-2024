@@ -14,7 +14,7 @@ Packages used:
   - Handle more complex MongoDB operations
 
     
-#Steps to setup
+# Steps to setup
   - set up virtual environment
 Create a virtual environment 
 python -m venv myenv
