@@ -1,21 +1,38 @@
-**# Tech-Week-2024 [ Web Development ]** 
+# Create a virtual environment 
+python -m venv myenv
 
-Packages used:
-1. Flask
-  - Web framework in Python
-2. Flask-PyMongo
-  - Extension that simplifies when using MongoDB
-3. Pymongo
-  - Core library for interacting with MongoDB databases
-  - Execute queries,insert/update/delete documents
-  - Handle more complex MongoDB operations
+# This file is used by pip to install required python packages
+# Usage: pip install -r requirements.txt
 
+# Flask Framework
+Flask==1.0.2
 
-Steps to setup:
-1. Select python interpreter
-2. Create a virtual Environment 
-3. Choose your python version
-4. Under terminal install:
-  - pip install Flask
-  - pip install Flask-PyMongo
-  - pip install pymongo
+# Flask Packages
+Flask-Login==0.4.0
+Flask-Migrate==2.0.2
+Flask-Script==2.0.5
+Flask-SQLAlchemy==2.4.0
+Flask-WTF==0.14.2
+Flask-User==1.0.1.5
+
+# Automated tests
+pytest==3.0.5
+pytest-cov==2.4.0
+
+# requirements.txt
+Click==7.0
+Flask==1.1.1
+itsdangerous==1.1.0
+Jinja2==2.11.1
+MarkupSafe==1.1.1
+Werkzeug==1.0.0
+
+Flask
+pymongo[srv]
+Flask-PyMongo
+Flask-Cors
+faker==0.8.13
+jupyter==1.0.0
+jupyter-client==5.2.4
+jupyter-console==6.0.0
+jupyter-core==4.4.0
