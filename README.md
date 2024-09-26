@@ -15,12 +15,10 @@ Packages used:
 
     
 # Steps to setup
-  - set up virtual environment
-
-Create a virtual environment 
+  - Create a virtual environment 
 
 python -m venv myenv
 
-  - install flask
-  - install mongodb
-  - install flask-pymongo
+  - Install flask
+  - Install mongodb
+  - Install flask-pymongo
