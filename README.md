@@ -14,7 +14,7 @@ Packages used:
   - Handle more complex MongoDB operations
 4. Steps to setup
   - set up virtual environment
-# Create a virtual environment 
+Create a virtual environment 
 python -m venv myenv
   - install flask
   - install mongodb
