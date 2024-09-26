@@ -12,4 +12,10 @@ Packages used:
   - Core library for interacting with MongoDB databases
   - Execute queries,insert/update/delete documents
   - Handle more complex MongoDB operations
-4. Steps to setup ( refer to requirement.txt ) 
+4. Steps to setup
+  - set up virtual environment
+# Create a virtual environment 
+python -m venv myenv
+  - install flask
+  - install mongodb
+  - install flask-pymongo
