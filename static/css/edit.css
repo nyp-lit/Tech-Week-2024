@@ -1,0 +1,72 @@
+form {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+form input,
+form button {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #333;
+    width: calc(50% - 16px);
+    /* Make inputs equal width, minus the gap */
+    box-sizing: border-box;
+    /* Ensure padding is included in width */
+}
+
+form input[type="date"],
+form input[type="time"] {
+    width: calc(50% - 16px);
+    /* Force date and time inputs to same width as text inputs */
+}
+
+form input:hover {
+    background-color: #ddd;
+}
+
+form button {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    background-color: rgb(142, 62, 185);
+    padding: 10px;
+    color: white;
+    border: none;
+    width: 100%;
+    max-width: 25%;
+    /* Keep button smaller */
+    text-align: center;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: rgb(110, 50, 143);
+}
+
+form button i {
+    margin-right: 8px;
+}
+
+/* Back to Task List Button Styling */
+
+#back-button a {
+    text-decoration: none;
+    padding: 5px 15px;
+    color: white;
+    background-color: rgb(142, 62, 185);
+    border-radius: 15px;
+    font-weight: bold;
+    text-align: center;
+    margin-right: auto;
+    width: 5%;
+    font-size: smaller;
+    display: inline-block;
+}
+
+#back-button a:hover {
+    background-color: #730f73;
+    color: white;
+}
