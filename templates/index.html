@@ -61,39 +61,5 @@
     {% endif %}
         </div>
     </div>
-
-    <script>
-// Function to set a reminder
-function setReminder(title, description, date, time) {
-    // Split the time string to get the start time
-    const startTime = time.split(' - ')[0]; // Get the start time
-
-    const dateTimeString = ${date}T${startTime}:00;
-    const reminderTime = new Date(dateTimeString);
-
-    const currentTime = new Date();
-    const timeDifference = reminderTime - currentTime;
-    console.log(timeDifference);
-
-    if (timeDifference > 0) {
-        // Schedule notification
-        if (Notification.permission === "granted") {
-            var notification = new Notification(title, {
-                body: description,
-                requireInteraction: true
-            });
-        } else {
-            console.log("Notification permission not granted.");
-        }
-
-        // Ask for notification permission if not granted
-        if (Notification.permission !== "granted") {
-            Notification.requestPermission();
-        }
-    } else {
-        alert("The scheduled reminder time is in the past!");
-    }
-}
-    </script>
 </body>
 </html>
