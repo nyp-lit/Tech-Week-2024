@@ -1,10 +1,5 @@
-# Tech Week 2024 
-
-Slides link: 
-
-Practical material link:
-
-# Information
+# Tech Week 2024 Web Application
+## Information
 Packages used:
 1. Flask ( Web framework in Python ) 
 2. Flask-PyMongo ( Extension to simplifies using MongoDB ) 
@@ -14,7 +9,7 @@ Packages used:
   - Handle more complex MongoDB operations
 
     
-# Steps to setup
+## Steps to setup
   - Ensure Python and selected code interpreter installed, in this case VSCode
   - Install MongoDB
   - Create a virtual environment using "python -m venv myenv" and connect to the venv Python interpreter
